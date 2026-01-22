@@ -116,37 +116,6 @@
             color: #3b82f6;
         }
         
-        .watermark {
-            position: absolute;
-            opacity: 0.03;
-            font-size: 180px;
-            font-weight: 900;
-            color: #1e40af;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-30deg);
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        .stamp {
-            position: absolute;
-            right: 60px;
-            bottom: 60px;
-            width: 120px;
-            height: 120px;
-            border: 2px dashed #ef4444;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            color: #ef4444;
-            transform: rotate(15deg);
-            opacity: 0.7;
-        }
-        
         .toggle-sidebar {
             position: fixed;
             top: 20px;
@@ -162,6 +131,29 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-image {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: white;
+            padding: 5px;
+        }
+        
+        .product-item {
+            background: #374151;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border-left: 4px solid #3b82f6;
         }
         
         @media print {
@@ -211,10 +203,8 @@
         <div class="p-6">
             <!-- Header -->
             <div class="mb-8">
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="bg-blue-500 p-3 rounded-lg">
-                        <i class="fas fa-leaf text-2xl"></i>
-                    </div>
+                <div class="logo-container mb-4">
+                    <img src="https://araldomqfedor-blip.github.io/loi/loko.png" alt="DAMAI AGRO FARM Logo" class="logo-image">
                     <div>
                         <h1 class="text-2xl font-bold">DAMAI AGRO FARM</h1>
                         <p class="text-blue-200 text-sm">Complete Admin Panel</p>
@@ -298,6 +288,19 @@
                                 <label class="text-sm text-gray-300">Email</label>
                                 <input type="text" id="company-email" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="purchasedaf@yahoo.com">
                             </div>
+                            <!-- NEW: Header and Footer Address Fields -->
+                            <div>
+                                <label class="text-sm text-gray-300">Header Address</label>
+                                <input type="text" id="header-address" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Gondangdia, Jakarta 10350">
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-300">Footer Address</label>
+                                <input type="text" id="footer-address" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Gondangdia, Jakarta 10350, Indonesia">
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-300">Copyright Text</label>
+                                <input type="text" id="copyright-text" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="© 2023 Damai Agro Farm. All Rights Reserved.">
+                            </div>
                         </div>
                     </div>
                     
@@ -343,6 +346,21 @@
                             <div>
                                 <label class="text-sm text-gray-300">Value</label>
                                 <input type="text" id="product-value" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="USD 385,000.00">
+                            </div>
+                        </div>
+                        
+                        <!-- Add More Products Button -->
+                        <div class="mt-4">
+                            <button onclick="openAddProductModal()" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-semibold">
+                                <i class="fas fa-plus mr-2"></i> Add More Products
+                            </button>
+                        </div>
+                        
+                        <!-- Current Products List -->
+                        <div class="mt-4">
+                            <h5 class="text-sm font-bold text-blue-300 mb-2">Current Products:</h5>
+                            <div id="products-list" class="space-y-2">
+                                <!-- Products will be listed here dynamically -->
                             </div>
                         </div>
                     </div>
@@ -597,6 +615,41 @@
                 </button>
             </div>
         </div>
+        
+        <!-- Add Product Modal -->
+        <div id="add-product-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-md">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Add New Product</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                            <input type="text" id="new-product-name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., Premium Cardamom">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                            <input type="text" id="new-product-quantity" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., 10 Metric Tons">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Value</label>
+                            <input type="text" id="new-product-value" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., USD 250,000.00">
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3 mt-6">
+                        <button onclick="saveNewProduct()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg">
+                            <i class="fas fa-plus mr-2"></i> Add Product
+                        </button>
+                        <button onclick="closeAddProductModal()" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 rounded-lg">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -616,7 +669,9 @@
                 email: "purchasedaf@yahoo.com",
                 documentType: "Letter of Intent",
                 date: "December 05, 2023",
-                reference: "Ref: DAF-LOI-12/2023"
+                reference: "Ref: DAF-LOI-12/2023",
+                logoUrl: "https://araldomqfedor-blip.github.io/loi/loko.png",
+                headerAddress: "Gondangdia, Jakarta 10350"
             },
             addresses: {
                 fromCompany: "Damai Agro Farm",
@@ -635,13 +690,14 @@
                 addressQuote: "Jl. KKO. Thamrin No.12, RT.3/RW.14, Gondangdia, Kec. Daerah Khusus Jakarta, Indonesia",
                 paragraph2: "Our core business activities encompass comprehensive agricultural services and high-quality produce distribution across Southeast Asia.",
                 paragraph3: "In accordance with our business expansion strategy, we hereby confirm with full corporate responsibility our willingness and capacity to enter into a formal purchase agreement for the following commodities:",
-                tableRows: [
-                    ["Product Name", "Premium Grade Cardamom"],
-                    ["Total Quantity", "12 Metric Tons"],
-                    ["Total Contract Value", "USD 385,000.00"],
-                    ["Delivery Schedule", "Within 35 days from Purchase Order date<br><span class='text-sm text-gray-600'>(Can be delivered in multiple shipments)</span>"],
-                    ["Documentation Requirements", "• Certificate of Origin<br>• Quality Inspection Certificate<br>• Phytosanitary Certificate<br>• All necessary export/import permits"]
+                products: [
+                    {
+                        name: "Premium Grade Cardamom",
+                        quantity: "12 Metric Tons",
+                        value: "USD 385,000.00"
+                    }
                 ],
+                tableRows: [],
                 shippingTerms: {
                     origin: "JNPT, Navi Mumbai, India",
                     destination: "Tanjung Priok, Jakarta, Indonesia",
@@ -661,12 +717,18 @@
                 company: "DAMAI AGRO FARM",
                 date: "December 05, 2023"
             },
+            footer: {
+                address: "Gondangdia, Jakarta 10350, Indonesia",
+                copyright: "© 2023 Damai Agro Farm. All Rights Reserved.",
+                phone: "+62 857-6055-05611",
+                email: "purchasedaf@yahoo.com"
+            },
             styles: {
                 primaryColor: "#1e3a8a",
                 secondaryColor: "#3b82f6",
                 headingFont: "'Playfair Display', serif",
                 bodyFont: "'Montserrat', sans-serif",
-                watermarkText: "LETTER OF INTENT",
+                watermarkText: "",
                 watermarkOpacity: 0.03
             }
         };
@@ -677,12 +739,37 @@
             const savedData = localStorage.getItem('damaiAgroLetter');
             if (savedData) {
                 letterData = JSON.parse(savedData);
+                if (!letterData.content.products) {
+                    letterData.content.products = [{
+                        name: "Premium Grade Cardamom",
+                        quantity: "12 Metric Tons",
+                        value: "USD 385,000.00"
+                    }];
+                }
+                // Ensure footer data exists
+                if (!letterData.footer) {
+                    letterData.footer = {
+                        address: "Gondangdia, Jakarta 10350, Indonesia",
+                        copyright: "© 2023 Damai Agro Farm. All Rights Reserved.",
+                        phone: "+62 857-6055-05611",
+                        email: "purchasedaf@yahoo.com"
+                    };
+                }
+                // Ensure header address exists
+                if (!letterData.header.headerAddress) {
+                    letterData.header.headerAddress = "Gondangdia, Jakarta 10350";
+                }
+                updateTableFromProducts();
             } else {
                 letterData = JSON.parse(JSON.stringify(defaultData));
+                updateTableFromProducts();
             }
             
             // Initialize form inputs
             initializeFormInputs();
+            
+            // Update products list
+            updateProductsList();
             
             // Render the letter
             renderLetter();
@@ -713,6 +800,9 @@
             document.getElementById('company-tagline').value = letterData.header.tagline;
             document.getElementById('company-phone').value = letterData.header.phone;
             document.getElementById('company-email').value = letterData.header.email;
+            document.getElementById('header-address').value = letterData.header.headerAddress || "Gondangdia, Jakarta 10350";
+            document.getElementById('footer-address').value = letterData.footer.address || "Gondangdia, Jakarta 10350, Indonesia";
+            document.getElementById('copyright-text').value = letterData.footer.copyright || "© 2023 Damai Agro Farm. All Rights Reserved.";
             
             // Address Details
             document.getElementById('from-company').value = letterData.addresses.fromCompany;
@@ -721,10 +811,11 @@
             document.getElementById('from-address2').value = letterData.addresses.fromAddress2;
             document.getElementById('from-address3').value = letterData.addresses.fromAddress3;
             
-            // Product Details
-            document.getElementById('product-name').value = letterData.content.tableRows[0][1];
-            document.getElementById('product-quantity').value = letterData.content.tableRows[1][1];
-            document.getElementById('product-value').value = letterData.content.tableRows[2][1];
+            // Product Details - Use first product
+            const firstProduct = letterData.content.products[0] || { name: "", quantity: "", value: "" };
+            document.getElementById('product-name').value = firstProduct.name;
+            document.getElementById('product-quantity').value = firstProduct.quantity;
+            document.getElementById('product-value').value = firstProduct.value;
             
             // Signature Details
             document.getElementById('signatory-name').value = letterData.signature.name;
@@ -738,6 +829,145 @@
             document.getElementById('watermark-text').value = letterData.styles.watermarkText;
             document.getElementById('watermark-opacity').value = Math.round(letterData.styles.watermarkOpacity * 100 / 10);
             document.getElementById('opacity-value').textContent = Math.round(letterData.styles.watermarkOpacity * 100) + "%";
+        }
+        
+        // Update products list in sidebar
+        function updateProductsList() {
+            const productsList = document.getElementById('products-list');
+            productsList.innerHTML = '';
+            
+            if (letterData.content.products && letterData.content.products.length > 0) {
+                letterData.content.products.forEach((product, index) => {
+                    const productElement = document.createElement('div');
+                    productElement.className = 'product-item';
+                    productElement.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <div class="font-semibold text-white">${product.name}</div>
+                                <div class="text-sm text-gray-300">${product.quantity} - ${product.value}</div>
+                            </div>
+                            <button onclick="removeProduct(${index})" class="ml-2 text-red-400 hover:text-red-300">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                    productsList.appendChild(productElement);
+                });
+            } else {
+                productsList.innerHTML = '<p class="text-gray-400 text-sm">No products added yet.</p>';
+            }
+        }
+        
+        // Open add product modal
+        function openAddProductModal() {
+            document.getElementById('add-product-modal').classList.remove('hidden');
+            document.getElementById('new-product-name').focus();
+        }
+        
+        // Close add product modal
+        function closeAddProductModal() {
+            document.getElementById('add-product-modal').classList.add('hidden');
+            // Clear inputs
+            document.getElementById('new-product-name').value = '';
+            document.getElementById('new-product-quantity').value = '';
+            document.getElementById('new-product-value').value = '';
+        }
+        
+        // Save new product
+        function saveNewProduct() {
+            const name = document.getElementById('new-product-name').value.trim();
+            const quantity = document.getElementById('new-product-quantity').value.trim();
+            const value = document.getElementById('new-product-value').value.trim();
+            
+            if (!name || !quantity || !value) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Add new product
+            if (!letterData.content.products) {
+                letterData.content.products = [];
+            }
+            
+            letterData.content.products.push({
+                name: name,
+                quantity: quantity,
+                value: value
+            });
+            
+            // Update products list
+            updateProductsList();
+            
+            // Update table rows based on products
+            updateTableFromProducts();
+            
+            // Close modal
+            closeAddProductModal();
+            
+            // Re-render letter
+            renderLetter();
+            
+            // Show success message
+            showNotification('Product added successfully!', 'success');
+            changesMade++;
+            updateStatus();
+        }
+        
+        // Remove product
+        function removeProduct(index) {
+            if (confirm('Are you sure you want to remove this product?')) {
+                letterData.content.products.splice(index, 1);
+                updateProductsList();
+                updateTableFromProducts();
+                renderLetter();
+                showNotification('Product removed!', 'success');
+                changesMade++;
+                updateStatus();
+            }
+        }
+        
+        // Update table from products - FIXED VERSION
+        function updateTableFromProducts() {
+            // Clear existing table rows
+            letterData.content.tableRows = [];
+            
+            if (letterData.content.products && letterData.content.products.length > 0) {
+                // Add each product as separate rows in the table
+                letterData.content.products.forEach((product, index) => {
+                    // Add product name row
+                    letterData.content.tableRows.push([`Product ${index + 1}`, product.name]);
+                    
+                    // Add quantity row
+                    letterData.content.tableRows.push([`Quantity ${index + 1}`, product.quantity]);
+                    
+                    // Add value row
+                    letterData.content.tableRows.push([`Value ${index + 1}`, product.value]);
+                    
+                    // Add empty separator row between products (except after last product)
+                    if (index < letterData.content.products.length - 1) {
+                        letterData.content.tableRows.push(["", ""]);
+                    }
+                });
+                
+                // Add total value row
+                let totalValue = 0;
+                letterData.content.products.forEach(product => {
+                    const valueStr = product.value.replace(/[^0-9.]/g, '');
+                    const value = parseFloat(valueStr) || 0;
+                    totalValue += value;
+                });
+                
+                // Add separator before total
+                if (letterData.content.products.length > 0) {
+                    letterData.content.tableRows.push(["", ""]);
+                }
+                
+                letterData.content.tableRows.push(["Total Contract Value", `USD ${totalValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`]);
+            }
+            
+            // Add other rows after products
+            letterData.content.tableRows.push(["Delivery Schedule", "Within 35 days from Purchase Order date"]);
+            letterData.content.tableRows.push(["Documentation Requirements", "• Certificate of Origin<br>• Quality Inspection Certificate<br>• Phytosanitary Certificate"]);
         }
         
         // Render the letter
@@ -756,13 +986,6 @@
                 { id: 'footer', render: renderFooter }
             ];
             
-            // Add watermark
-            const watermark = document.createElement('div');
-            watermark.className = 'watermark';
-            watermark.textContent = letterData.styles.watermarkText;
-            watermark.style.opacity = letterData.styles.watermarkOpacity;
-            container.appendChild(watermark);
-            
             // Render each section
             sections.forEach(section => {
                 const sectionElement = section.render();
@@ -771,18 +994,6 @@
                 }
             });
             
-            // Add stamp
-            const stamp = document.createElement('div');
-            stamp.className = 'stamp';
-            stamp.innerHTML = `
-                <div class="text-center">
-                    <div class="text-xs mb-1">OFFICIAL</div>
-                    <div class="font-bold">DAMAI AGRO</div>
-                    <div class="text-xs mt-1">FARM</div>
-                </div>
-            `;
-            container.appendChild(stamp);
-            
             // Apply styles
             applyStylesToLetter();
             
@@ -790,7 +1001,7 @@
             makeElementsEditable();
         }
         
-        // Render header section
+        // Render header section - UPDATED WITH EDITABLE ADDRESS
         function renderHeader() {
             const section = document.createElement('div');
             section.className = 'mb-12';
@@ -798,8 +1009,8 @@
                 <div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-xl shadow-lg p-6">
                     <div class="flex flex-col md:flex-row justify-between items-center">
                         <div class="flex items-center gap-4 mb-6 md:mb-0">
-                            <div class="bg-blue-500 w-16 h-16 flex items-center justify-center shadow-lg rounded-lg">
-                                <i class="fas fa-leaf text-2xl text-white"></i>
+                            <div class="bg-white w-20 h-20 flex items-center justify-center shadow-lg rounded-xl overflow-hidden">
+                                <img src="${letterData.header.logoUrl}" alt="DAMAI AGRO FARM Logo" class="w-full h-full object-contain p-2">
                             </div>
                             <div>
                                 <h1 class="text-3xl md:text-4xl font-bold" data-edit="header.companyLine1">${letterData.header.companyLine1}</h1>
@@ -811,7 +1022,7 @@
                         <div class="text-center md:text-right">
                             <div class="mb-2">
                                 <i class="fas fa-map-marker-alt mr-2"></i>
-                                <span>Gondangdia, Jakarta 10350</span>
+                                <span data-edit="header.headerAddress">${letterData.header.headerAddress}</span>
                             </div>
                             <div class="mb-2">
                                 <i class="fas fa-phone mr-2"></i>
@@ -922,10 +1133,21 @@
             
             let tableRowsHTML = '';
             letterData.content.tableRows.forEach((row, index) => {
+                const isEmptyRow = row[0] === "" && row[1] === "";
                 tableRowsHTML += `
-                    <tr class="${index % 2 === 0 ? 'hover:bg-gray-50' : 'hover:bg-gray-50 bg-gray-50'}">
-                        <td class="border border-gray-300 px-6 py-4 font-semibold" data-edit="content.tableRows.${index}.0" data-index="${index}" data-col="0">${row[0]}</td>
-                        <td class="border border-gray-300 px-6 py-4" data-edit="content.tableRows.${index}.1" data-index="${index}" data-col="1">${row[1]}</td>
+                    <tr class="${index % 2 === 0 && !isEmptyRow ? 'hover:bg-gray-50' : !isEmptyRow ? 'hover:bg-gray-50 bg-gray-50' : ''} ${isEmptyRow ? 'h-4' : ''}">
+                        <td class="border border-gray-300 px-6 py-4 ${isEmptyRow ? 'border-none' : ''} ${row[0].includes('Product') || row[0].includes('Total') ? 'font-semibold' : ''}" 
+                            data-edit="content.tableRows.${index}.0" 
+                            data-index="${index}" 
+                            data-col="0">
+                            ${row[0]}
+                        </td>
+                        <td class="border border-gray-300 px-6 py-4 ${isEmptyRow ? 'border-none' : ''}" 
+                            data-edit="content.tableRows.${index}.1" 
+                            data-index="${index}" 
+                            data-col="1">
+                            ${row[1]}
+                        </td>
                     </tr>
                 `;
             });
@@ -942,51 +1164,6 @@
                         ${tableRowsHTML}
                     </tbody>
                 </table>
-            `;
-            return section;
-        }
-        
-        // Render shipping and payment terms
-        function renderTerms() {
-            const section = document.createElement('div');
-            section.className = 'grid grid-cols-1 md:grid-cols-2 gap-6 my-8';
-            section.innerHTML = `
-                <div class="bg-green-50 p-6 rounded-lg border border-green-200">
-                    <h4 class="font-bold text-green-800 mb-4 text-lg flex items-center gap-2">
-                        <i class="fas fa-ship"></i> Shipping Terms
-                    </h4>
-                    <div class="space-y-2">
-                        <p><strong class="text-green-700">Origin Port:</strong> <span data-edit="content.shippingTerms.origin">${letterData.content.shippingTerms.origin}</span></p>
-                        <p><strong class="text-green-700">Destination Port:</strong> <span data-edit="content.shippingTerms.destination">${letterData.content.shippingTerms.destination}</span></p>
-                        <p><strong class="text-green-700">Incoterms:</strong> <span data-edit="content.shippingTerms.incoterms">${letterData.content.shippingTerms.incoterms}</span></p>
-                    </div>
-                </div>
-                
-                <div class="bg-yellow-50 p-6 rounded-lg border border-yellow-200">
-                    <h4 class="font-bold text-yellow-800 mb-4 text-lg flex items-center gap-2">
-                        <i class="fas fa-file-invoice-dollar"></i> Payment Terms
-                    </h4>
-                    <div class="space-y-2">
-                        <p><strong class="text-yellow-700">Advance Payment:</strong> <span data-edit="content.paymentTerms.advance">${letterData.content.paymentTerms.advance}</span></p>
-                        <p><strong class="text-yellow-700">Balance Payment:</strong> <span data-edit="content.paymentTerms.balance">${letterData.content.paymentTerms.balance}</span></p>
-                        <p><strong class="text-yellow-700">L/C Type:</strong> <span data-edit="content.paymentTerms.lcType">${letterData.content.paymentTerms.lcType}</span></p>
-                    </div>
-                </div>
-            `;
-            return section;
-        }
-        
-        // Render closing paragraphs
-        function renderClosing() {
-            const section = document.createElement('div');
-            section.innerHTML = `
-                <p class="italic text-gray-700 mt-8" data-edit="content.closing1">
-                    ${letterData.content.closing1}
-                </p>
-
-                <p class="font-medium mt-6" data-edit="content.closing2">
-                    ${letterData.content.closing2}
-                </p>
             `;
             return section;
         }
@@ -1021,7 +1198,7 @@
             return section;
         }
         
-        // Render footer
+        // Render footer - UPDATED WITH EDITABLE FIELDS
         function renderFooter() {
             const section = document.createElement('footer');
             section.className = 'bg-gray-900 text-white py-8 mt-12 rounded-xl';
@@ -1030,8 +1207,8 @@
                     <div class="flex flex-col md:flex-row justify-between items-center">
                         <div class="mb-6 md:mb-0">
                             <div class="flex items-center gap-3 mb-4">
-                                <div class="bg-blue-600 p-2 rounded-lg">
-                                    <i class="fas fa-leaf"></i>
+                                <div class="bg-white p-2 rounded-lg overflow-hidden">
+                                    <img src="${letterData.header.logoUrl}" alt="DAMAI AGRO FARM Logo" class="w-12 h-12 object-contain">
                                 </div>
                                 <div>
                                     <h3 class="text-xl font-bold">DAMAI AGRO FARM</h3>
@@ -1040,22 +1217,24 @@
                             </div>
                             <p class="text-gray-400 text-sm">
                                 <i class="fas fa-map-marker-alt mr-2"></i>
-                                Gondangdia, Jakarta 10350, Indonesia
+                                <span data-edit="footer.address">${letterData.footer.address}</span>
                             </p>
                         </div>
                         
                         <div class="text-center md:text-right">
                             <div class="flex gap-6 mb-4">
                                 <span class="text-blue-300">
-                                    <i class="fas fa-phone mr-2"></i>${letterData.header.phone}
+                                    <i class="fas fa-phone mr-2"></i>
+                                    <span data-edit="footer.phone">${letterData.footer.phone}</span>
                                 </span>
                                 <span class="text-blue-300">
-                                    <i class="fas fa-envelope mr-2"></i>${letterData.header.email}
+                                    <i class="fas fa-envelope mr-2"></i>
+                                    <span data-edit="footer.email">${letterData.footer.email}</span>
                                 </span>
                             </div>
-                            <p class="text-gray-400 text-sm">
-                                © 2023 Damai Agro Farm. All Rights Reserved.
-                            </div>
+                            <p class="text-gray-400 text-sm" data-edit="footer.copyright">
+                                ${letterData.footer.copyright}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -1183,7 +1362,7 @@
             target[lastKey] = value;
         }
         
-        // Apply quick edits from form
+        // Apply quick edits from form - UPDATED WITH NEW FIELDS
         function applyQuickEdits() {
             // Update data from form inputs
             letterData.content.title = document.getElementById('quick-title').value;
@@ -1195,6 +1374,7 @@
             letterData.header.tagline = document.getElementById('company-tagline').value;
             letterData.header.phone = document.getElementById('company-phone').value;
             letterData.header.email = document.getElementById('company-email').value;
+            letterData.header.headerAddress = document.getElementById('header-address').value;
             
             letterData.addresses.fromCompany = document.getElementById('from-company').value;
             letterData.addresses.toCompany = document.getElementById('to-company').value;
@@ -1202,12 +1382,23 @@
             letterData.addresses.fromAddress2 = document.getElementById('from-address2').value;
             letterData.addresses.fromAddress3 = document.getElementById('from-address3').value;
             
-            letterData.content.tableRows[0][1] = document.getElementById('product-name').value;
-            letterData.content.tableRows[1][1] = document.getElementById('product-quantity').value;
-            letterData.content.tableRows[2][1] = document.getElementById('product-value').value;
+            // Update first product if exists
+            if (letterData.content.products && letterData.content.products.length > 0) {
+                letterData.content.products[0].name = document.getElementById('product-name').value;
+                letterData.content.products[0].quantity = document.getElementById('product-quantity').value;
+                letterData.content.products[0].value = document.getElementById('product-value').value;
+                updateTableFromProducts();
+                updateProductsList();
+            }
             
             letterData.signature.name = document.getElementById('signatory-name').value;
             letterData.signature.designation = document.getElementById('signatory-designation').value;
+            
+            // Update footer data
+            letterData.footer.address = document.getElementById('footer-address').value;
+            letterData.footer.copyright = document.getElementById('copyright-text').value;
+            letterData.footer.phone = letterData.header.phone;
+            letterData.footer.email = letterData.header.email;
             
             // Re-render letter
             renderLetter();
@@ -1233,13 +1424,6 @@
             
             // Apply styles to letter
             applyStylesToLetter();
-            
-            // Update watermark
-            const watermark = document.querySelector('.watermark');
-            if (watermark) {
-                watermark.textContent = letterData.styles.watermarkText;
-                watermark.style.opacity = letterData.styles.watermarkOpacity;
-            }
             
             showNotification('Styles applied successfully!', 'success');
             changesMade++;
@@ -1327,7 +1511,29 @@
                 try {
                     const importedData = JSON.parse(event.target.result);
                     letterData = importedData;
+                    if (!letterData.content.products) {
+                        letterData.content.products = [{
+                            name: "Premium Grade Cardamom",
+                            quantity: "12 Metric Tons",
+                            value: "USD 385,000.00"
+                        }];
+                    }
+                    // Ensure footer data exists
+                    if (!letterData.footer) {
+                        letterData.footer = {
+                            address: "Gondangdia, Jakarta 10350, Indonesia",
+                            copyright: "© 2023 Damai Agro Farm. All Rights Reserved.",
+                            phone: "+62 857-6055-05611",
+                            email: "purchasedaf@yahoo.com"
+                        };
+                    }
+                    // Ensure header address exists
+                    if (!letterData.header.headerAddress) {
+                        letterData.header.headerAddress = "Gondangdia, Jakarta 10350";
+                    }
+                    updateTableFromProducts();
                     initializeFormInputs();
+                    updateProductsList();
                     renderLetter();
                     showNotification('Data imported successfully!', 'success');
                     changesMade = 0;
@@ -1347,7 +1553,9 @@
         function resetToDefault() {
             if (confirm('Are you sure you want to reset to default values? All changes will be lost.')) {
                 letterData = JSON.parse(JSON.stringify(defaultData));
+                updateTableFromProducts();
                 initializeFormInputs();
+                updateProductsList();
                 renderLetter();
                 showNotification('Reset to default values!', 'info');
                 changesMade = 0;
@@ -1359,13 +1567,44 @@
         function clearAll() {
             if (confirm('Are you sure you want to clear everything? This cannot be undone.')) {
                 letterData = {
-                    header: { companyLine1: "", companyLine2: "", tagline: "", phone: "", email: "", documentType: "", date: "", reference: "" },
+                    header: { 
+                        companyLine1: "", 
+                        companyLine2: "", 
+                        tagline: "", 
+                        phone: "", 
+                        email: "", 
+                        documentType: "", 
+                        date: "", 
+                        reference: "",
+                        logoUrl: "https://araldomqfedor-blip.github.io/loi/loko.png",
+                        headerAddress: ""
+                    },
                     addresses: { fromCompany: "", fromAddress1: "", fromAddress2: "", fromAddress3: "", toCompany: "", toAddress1: "", toAddress2: "", toAddress3: "" },
-                    content: { title: "", salutation: "", paragraph1: "", addressQuote: "", paragraph2: "", paragraph3: "", tableRows: [["", ""]], shippingTerms: { origin: "", destination: "", incoterms: "" }, paymentTerms: { advance: "", balance: "", lcType: "" }, closing1: "", closing2: "" },
+                    content: { 
+                        title: "", 
+                        salutation: "", 
+                        paragraph1: "", 
+                        addressQuote: "", 
+                        paragraph2: "", 
+                        paragraph3: "", 
+                        products: [],
+                        tableRows: [],
+                        shippingTerms: { origin: "", destination: "", incoterms: "" }, 
+                        paymentTerms: { advance: "", balance: "", lcType: "" }, 
+                        closing1: "", 
+                        closing2: "" 
+                    },
                     signature: { name: "", designation: "", company: "", date: "" },
+                    footer: {
+                        address: "",
+                        copyright: "",
+                        phone: "",
+                        email: ""
+                    },
                     styles: letterData.styles
                 };
                 initializeFormInputs();
+                updateProductsList();
                 renderLetter();
                 showNotification('All content cleared!', 'warning');
                 changesMade = 0;
@@ -1493,8 +1732,16 @@
         // Close edit popup when clicking outside
         document.addEventListener('click', function(e) {
             const popup = document.getElementById('edit-popup');
-            if (!popup.contains(e.target) && currentEditingElement !== e.target) {
+            if (popup && !popup.contains(e.target) && currentEditingElement !== e.target) {
                 cancelEdit();
+            }
+            
+            const modal = document.getElementById('add-product-modal');
+            if (modal && !modal.contains(e.target) && !e.target.closest('[onclick*="openAddProductModal"]')) {
+                // Don't close if clicking on add product button
+                if (!e.target.closest('[onclick*="openAddProductModal"]')) {
+                    closeAddProductModal();
+                }
             }
         });
         
@@ -1519,6 +1766,7 @@
             // Escape to cancel edit
             if (e.key === 'Escape') {
                 cancelEdit();
+                closeAddProductModal();
             }
             
             // Ctrl+D to download image
