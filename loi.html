@@ -301,6 +301,15 @@
                                 <label class="text-sm text-gray-300">Copyright Text</label>
                                 <input type="text" id="copyright-text" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="© 2023 Damai Agro Farm. All Rights Reserved.">
                             </div>
+                            <!-- NEW: Footer Company Details -->
+                            <div>
+                                <label class="text-sm text-gray-300">Footer Company Name</label>
+                                <input type="text" id="footer-company" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="DAMAI AGRO FARM">
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-300">Footer Tagline</label>
+                                <input type="text" id="footer-tagline" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Quality Agricultural Products">
+                            </div>
                         </div>
                     </div>
                     
@@ -721,7 +730,9 @@
                 address: "Gondangdia, Jakarta 10350, Indonesia",
                 copyright: "© 2023 Damai Agro Farm. All Rights Reserved.",
                 phone: "+62 857-6055-05611",
-                email: "purchasedaf@yahoo.com"
+                email: "purchasedaf@yahoo.com",
+                companyName: "DAMAI AGRO FARM",
+                tagline: "Quality Agricultural Products"
             },
             styles: {
                 primaryColor: "#1e3a8a",
@@ -752,12 +763,21 @@
                         address: "Gondangdia, Jakarta 10350, Indonesia",
                         copyright: "© 2023 Damai Agro Farm. All Rights Reserved.",
                         phone: "+62 857-6055-05611",
-                        email: "purchasedaf@yahoo.com"
+                        email: "purchasedaf@yahoo.com",
+                        companyName: "DAMAI AGRO FARM",
+                        tagline: "Quality Agricultural Products"
                     };
                 }
                 // Ensure header address exists
                 if (!letterData.header.headerAddress) {
                     letterData.header.headerAddress = "Gondangdia, Jakarta 10350";
+                }
+                // Ensure footer company name and tagline exist
+                if (!letterData.footer.companyName) {
+                    letterData.footer.companyName = "DAMAI AGRO FARM";
+                }
+                if (!letterData.footer.tagline) {
+                    letterData.footer.tagline = "Quality Agricultural Products";
                 }
                 updateTableFromProducts();
             } else {
@@ -803,6 +823,8 @@
             document.getElementById('header-address').value = letterData.header.headerAddress || "Gondangdia, Jakarta 10350";
             document.getElementById('footer-address').value = letterData.footer.address || "Gondangdia, Jakarta 10350, Indonesia";
             document.getElementById('copyright-text').value = letterData.footer.copyright || "© 2023 Damai Agro Farm. All Rights Reserved.";
+            document.getElementById('footer-company').value = letterData.footer.companyName || "DAMAI AGRO FARM";
+            document.getElementById('footer-tagline').value = letterData.footer.tagline || "Quality Agricultural Products";
             
             // Address Details
             document.getElementById('from-company').value = letterData.addresses.fromCompany;
@@ -1198,7 +1220,7 @@
             return section;
         }
         
-        // Render footer - UPDATED WITH EDITABLE FIELDS
+        // Render footer - UPDATED VERSION (EDitable company name and tagline, phone in single line, email removed)
         function renderFooter() {
             const section = document.createElement('footer');
             section.className = 'bg-gray-900 text-white py-8 mt-12 rounded-xl';
@@ -1211,8 +1233,8 @@
                                     <img src="${letterData.header.logoUrl}" alt="DAMAI AGRO FARM Logo" class="w-12 h-12 object-contain">
                                 </div>
                                 <div>
-                                    <h3 class="text-xl font-bold">DAMAI AGRO FARM</h3>
-                                    <p class="text-gray-400 text-sm">Quality Agricultural Products</p>
+                                    <h3 class="text-xl font-bold" data-edit="footer.companyName">${letterData.footer.companyName}</h3>
+                                    <p class="text-gray-400 text-sm" data-edit="footer.tagline">${letterData.footer.tagline}</p>
                                 </div>
                             </div>
                             <p class="text-gray-400 text-sm">
@@ -1222,15 +1244,12 @@
                         </div>
                         
                         <div class="text-center md:text-right">
-                            <div class="flex gap-6 mb-4">
+                            <div class="mb-4">
                                 <span class="text-blue-300">
                                     <i class="fas fa-phone mr-2"></i>
                                     <span data-edit="footer.phone">${letterData.footer.phone}</span>
                                 </span>
-                                <span class="text-blue-300">
-                                    <i class="fas fa-envelope mr-2"></i>
-                                    <span data-edit="footer.email">${letterData.footer.email}</span>
-                                </span>
+                                <!-- Email removed as requested -->
                             </div>
                             <p class="text-gray-400 text-sm" data-edit="footer.copyright">
                                 ${letterData.footer.copyright}
@@ -1399,6 +1418,8 @@
             letterData.footer.copyright = document.getElementById('copyright-text').value;
             letterData.footer.phone = letterData.header.phone;
             letterData.footer.email = letterData.header.email;
+            letterData.footer.companyName = document.getElementById('footer-company').value;
+            letterData.footer.tagline = document.getElementById('footer-tagline').value;
             
             // Re-render letter
             renderLetter();
@@ -1524,12 +1545,21 @@
                             address: "Gondangdia, Jakarta 10350, Indonesia",
                             copyright: "© 2023 Damai Agro Farm. All Rights Reserved.",
                             phone: "+62 857-6055-05611",
-                            email: "purchasedaf@yahoo.com"
+                            email: "purchasedaf@yahoo.com",
+                            companyName: "DAMAI AGRO FARM",
+                            tagline: "Quality Agricultural Products"
                         };
                     }
                     // Ensure header address exists
                     if (!letterData.header.headerAddress) {
                         letterData.header.headerAddress = "Gondangdia, Jakarta 10350";
+                    }
+                    // Ensure footer company name and tagline exist
+                    if (!letterData.footer.companyName) {
+                        letterData.footer.companyName = "DAMAI AGRO FARM";
+                    }
+                    if (!letterData.footer.tagline) {
+                        letterData.footer.tagline = "Quality Agricultural Products";
                     }
                     updateTableFromProducts();
                     initializeFormInputs();
@@ -1599,7 +1629,9 @@
                         address: "",
                         copyright: "",
                         phone: "",
-                        email: ""
+                        email: "",
+                        companyName: "",
+                        tagline: ""
                     },
                     styles: letterData.styles
                 };
