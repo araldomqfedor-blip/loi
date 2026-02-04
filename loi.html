@@ -58,13 +58,12 @@
             transition: all 0.3s ease;
             border-radius: 4px;
             padding: 2px 4px;
-            min-height: 20px;
         }
         
         .editable:hover {
             background: rgba(59, 130, 246, 0.1) !important;
             outline: 2px dashed #3b82f6 !important;
-            cursor: text !important;
+            cursor: pointer !important;
         }
         
         .editing {
@@ -73,33 +72,24 @@
         }
         
         .edit-popup {
-            position: fixed;
+            position: absolute;
             background: white;
             border: 2px solid #3b82f6;
             border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             z-index: 10000;
-            min-width: 400px;
-            max-width: 500px;
+            min-width: 300px;
         }
         
         .edit-popup textarea {
             width: 100%;
-            min-height: 120px;
-            padding: 12px;
+            min-height: 100px;
+            padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 6px;
+            border-radius: 4px;
             font-family: inherit;
-            font-size: 14px;
             resize: vertical;
-            line-height: 1.5;
-        }
-        
-        .edit-popup textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         
         .tab-button {
@@ -109,7 +99,6 @@
             padding: 10px 20px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 14px;
         }
         
         .tab-button.active {
@@ -142,11 +131,6 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .toggle-sidebar:hover {
-            transform: scale(1.1);
         }
         
         .logo-container {
@@ -172,46 +156,8 @@
             border-left: 4px solid #3b82f6;
         }
         
-        /* Floating Edit Toolbar */
-        .floating-toolbar {
-            position: fixed;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-            padding: 8px;
-            z-index: 9999;
-            display: flex;
-            gap: 5px;
-            align-items: center;
-            border: 1px solid #e5e7eb;
-        }
-        
-        .floating-toolbar button {
-            width: 36px;
-            height: 36px;
-            border: none;
-            border-radius: 4px;
-            background: #f8fafc;
-            color: #475569;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-        
-        .floating-toolbar button:hover {
-            background: #e2e8f0;
-            color: #1e293b;
-        }
-        
-        .floating-toolbar button.active {
-            background: #3b82f6;
-            color: white;
-        }
-        
         @media print {
-            .admin-sidebar, .toggle-sidebar, .floating-toolbar {
+            .admin-sidebar, .toggle-sidebar {
                 display: none !important;
             }
             
@@ -243,69 +189,6 @@
             .toggle-sidebar {
                 left: 20px;
             }
-            
-            .edit-popup {
-                min-width: 300px;
-                max-width: 90vw;
-                left: 50% !important;
-                transform: translateX(-50%);
-            }
-        }
-        
-        /* Font Editor Styles */
-        .font-editor {
-            position: fixed;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            z-index: 10001;
-            width: 300px;
-            border: 1px solid #e5e7eb;
-        }
-        
-        .font-editor select,
-        .font-editor input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        
-        .font-editor select:focus,
-        .font-editor input:focus {
-            outline: none;
-            border-color: #3b82f6;
-        }
-        
-        .color-picker-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .color-preview {
-            width: 30px;
-            height: 30px;
-            border-radius: 4px;
-            border: 2px solid #e5e7eb;
-        }
-        
-        /* Table specific styles */
-        .table-editable {
-            position: relative;
-        }
-        
-        .table-editable:hover {
-            background: rgba(59, 130, 246, 0.1) !important;
-            outline: 2px dashed #3b82f6 !important;
-        }
-        
-        .table-editing {
-            background: rgba(59, 130, 246, 0.2) !important;
-            outline: 2px solid #3b82f6 !important;
         }
     </style>
 </head>
@@ -330,19 +213,19 @@
                 
                 <!-- Quick Actions -->
                 <div class="grid grid-cols-2 gap-3 mb-6">
-                    <button onclick="saveChanges()" class="bg-green-600 hover:bg-green-700 text-white p-3 rounded-lg flex flex-col items-center justify-center gap-1 transition-colors">
+                    <button onclick="saveChanges()" class="bg-green-600 hover:bg-green-700 text-white p-3 rounded-lg flex flex-col items-center justify-center gap-1">
                         <i class="fas fa-save"></i>
                         <span class="text-xs">Save</span>
                     </button>
-                    <button onclick="updatePreview()" class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg flex flex-col items-center justify-center gap-1 transition-colors">
+                    <button onclick="updatePreview()" class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg flex flex-col items-center justify-center gap-1">
                         <i class="fas fa-eye"></i>
                         <span class="text-xs">Preview</span>
                     </button>
-                    <button onclick="downloadAsImage()" class="bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-lg flex flex-col items-center justify-center gap-1 transition-colors">
+                    <button onclick="downloadAsImage()" class="bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-lg flex flex-col items-center justify-center gap-1">
                         <i class="fas fa-download"></i>
                         <span class="text-xs">JPG</span>
                     </button>
-                    <button onclick="downloadAsPDF()" class="bg-red-600 hover:bg-red-700 text-white p-3 rounded-lg flex flex-col items-center justify-center gap-1 transition-colors">
+                    <button onclick="downloadAsPDF()" class="bg-red-600 hover:bg-red-700 text-white p-3 rounded-lg flex flex-col items-center justify-center gap-1">
                         <i class="fas fa-file-pdf"></i>
                         <span class="text-xs">PDF</span>
                     </button>
@@ -368,15 +251,15 @@
                         <div class="space-y-3">
                             <div>
                                 <label class="text-sm text-gray-300">Document Title</label>
-                                <input type="text" id="quick-title" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="LETTER OF INTENT">
+                                <input type="text" id="quick-title" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="LETTER OF INTENT">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">Reference Number</label>
-                                <input type="text" id="quick-ref" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="OGI-LOI-12/2023">
+                                <input type="text" id="quick-ref" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="OGI-LOI-12/2023">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">Date</label>
-                                <input type="text" id="quick-date" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="December 05, 2023">
+                                <input type="text" id="quick-date" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="December 05, 2023">
                             </div>
                         </div>
                     </div>
@@ -387,43 +270,45 @@
                         <div class="space-y-3">
                             <div>
                                 <label class="text-sm text-gray-300">Company Name Line 1</label>
-                                <input type="text" id="company-line1" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="OPULENCE GROUP">
+                                <input type="text" id="company-line1" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="OPULENCE GROUP">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">Company Name Line 2</label>
-                                <input type="text" id="company-line2" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="INDONESIA">
+                                <input type="text" id="company-line2" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="INDONESIA">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">Tagline</label>
-                                <input type="text" id="company-tagline" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="Global Trade & Investment Solutions">
+                                <input type="text" id="company-tagline" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Global Trade & Investment Solutions">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">Phone Number</label>
-                                <input type="text" id="company-phone" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="+62 831-8271-8126">
+                                <input type="text" id="company-phone" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="+62 831-8271-8126">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">Email</label>
-                                <input type="text" id="company-email" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="purchasedaf@yahoo.com">
+                                <input type="text" id="company-email" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="purchasedaf@yahoo.com">
                             </div>
+                            <!-- NEW: Header and Footer Address Fields -->
                             <div>
                                 <label class="text-sm text-gray-300">Header Address</label>
-                                <input type="text" id="header-address" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="Tower Anugrah Floor 16 Office Garden E.3.8, Mega Kuningan Area">
+                                <input type="text" id="header-address" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Tower Anugrah Floor 16 Office Garden E.3.8, Mega Kuningan Area">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">Footer Address</label>
-                                <input type="text" id="footer-address" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="Tower Anugrah Floor 16 Office Garden E.3.8, Mega Kuningan Area, Dr. Ide Anak Street Agung Gde">
+                                <input type="text" id="footer-address" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Tower Anugrah Floor 16 Office Garden E.3.8, Mega Kuningan Area, Dr. Ide Anak Street Agung Gde">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">Copyright Text</label>
-                                <input type="text" id="copyright-text" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="© 2023 Opulence Group Indonesia. All Rights Reserved.">
+                                <input type="text" id="copyright-text" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="© 2023 Opulence Group Indonesia. All Rights Reserved.">
                             </div>
+                            <!-- NEW: Footer Company Details -->
                             <div>
                                 <label class="text-sm text-gray-300">Footer Company Name</label>
-                                <input type="text" id="footer-company" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="OPULENCE GROUP INDONESIA">
+                                <input type="text" id="footer-company" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="OPULENCE GROUP INDONESIA">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">Footer Tagline</label>
-                                <input type="text" id="footer-tagline" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="Global Trade & Investment Solutions">
+                                <input type="text" id="footer-tagline" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Global Trade & Investment Solutions">
                             </div>
                         </div>
                     </div>
@@ -434,23 +319,23 @@
                         <div class="space-y-3">
                             <div>
                                 <label class="text-sm text-gray-300">From Company</label>
-                                <input type="text" id="from-company" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="Opulence Group Indonesia">
+                                <input type="text" id="from-company" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Opulence Group Indonesia">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">To Company</label>
-                                <input type="text" id="to-company" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="Silver Line Compass LLP">
+                                <input type="text" id="to-company" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Silver Line Compass LLP">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">From Address Line 1</label>
-                                <input type="text" id="from-address1" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="Tower Anugrah Floor 16 Office Garden E.3.8">
+                                <input type="text" id="from-address1" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Tower Anugrah Floor 16 Office Garden E.3.8">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">From Address Line 2</label>
-                                <input type="text" id="from-address2" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="Mega Kuningan Area, Dr. Ide Anak Street">
+                                <input type="text" id="from-address2" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Mega Kuningan Area, Dr. Ide Anak Street">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">From Address Line 3</label>
-                                <input type="text" id="from-address3" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="Agung Gde, Jakarta, Indonesia">
+                                <input type="text" id="from-address3" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Agung Gde, Jakarta, Indonesia">
                             </div>
                         </div>
                     </div>
@@ -461,42 +346,21 @@
                         <div class="space-y-3">
                             <div>
                                 <label class="text-sm text-gray-300">Product Name</label>
-                                <input type="text" id="product-name" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="Premium Grade Cardamom">
+                                <input type="text" id="product-name" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Premium Grade Cardamom">
                             </div>
                             <div>
-                                <label class="text-sm text-gray-300">HSN/SAC Code</label>
-                                <input type="text" id="product-hsn" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="0910.11.00">
-                            </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div>
-                                    <label class="text-sm text-gray-300">Quantity</label>
-                                    <input type="text" id="product-quantity" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="12">
-                                </div>
-                                <div>
-                                    <label class="text-sm text-gray-300">Unit</label>
-                                    <select id="product-unit" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                        <option value="Metric Tons">Metric Tons</option>
-                                        <option value="Kg">Kg</option>
-                                        <option value="Units">Units</option>
-                                        <option value="Pieces">Pieces</option>
-                                        <option value="Boxes">Boxes</option>
-                                        <option value="Litres">Litres</option>
-                                    </select>
-                                </div>
+                                <label class="text-sm text-gray-300">Quantity</label>
+                                <input type="text" id="product-quantity" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="12 Metric Tons">
                             </div>
                             <div>
-                                <label class="text-sm text-gray-300">Price per Unit (USD)</label>
-                                <input type="text" id="product-price" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="32,083.33">
-                            </div>
-                            <div>
-                                <label class="text-sm text-gray-300">Amount (USD)</label>
-                                <input type="text" id="product-amount" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="385,000.00" readonly>
+                                <label class="text-sm text-gray-300">Value</label>
+                                <input type="text" id="product-value" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="USD 385,000.00">
                             </div>
                         </div>
                         
                         <!-- Add More Products Button -->
                         <div class="mt-4">
-                            <button onclick="openAddProductModal()" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-semibold transition-colors">
+                            <button onclick="openAddProductModal()" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-semibold">
                                 <i class="fas fa-plus mr-2"></i> Add More Products
                             </button>
                         </div>
@@ -516,18 +380,18 @@
                         <div class="space-y-3">
                             <div>
                                 <label class="text-sm text-gray-300">Signatory Name</label>
-                                <input type="text" id="signatory-name" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="DAMAI KHAMUIR">
+                                <input type="text" id="signatory-name" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="DAMAI KHAMUIR">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">Designation</label>
-                                <input type="text" id="signatory-designation" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="Purchasing Manager">
+                                <input type="text" id="signatory-designation" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Purchasing Manager">
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="mt-6">
-                    <button onclick="applyQuickEdits()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition-colors">
+                    <button onclick="applyQuickEdits()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2">
                         <i class="fas fa-check"></i>
                         Apply All Quick Edits
                     </button>
@@ -542,11 +406,11 @@
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="text-sm text-gray-300">Primary Color</label>
-                                <input type="color" id="color-primary" class="w-full h-10 cursor-pointer rounded border border-gray-600" value="#1e3a8a">
+                                <input type="color" id="color-primary" class="w-full h-10 cursor-pointer" value="#1e3a8a">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">Secondary Color</label>
-                                <input type="color" id="color-secondary" class="w-full h-10 cursor-pointer rounded border border-gray-600" value="#3b82f6">
+                                <input type="color" id="color-secondary" class="w-full h-10 cursor-pointer" value="#3b82f6">
                             </div>
                         </div>
                     </div>
@@ -556,24 +420,20 @@
                         <div class="space-y-3">
                             <div>
                                 <label class="text-sm text-gray-300">Heading Font</label>
-                                <select id="font-heading" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <select id="font-heading" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white">
                                     <option value="'Playfair Display', serif">Playfair Display</option>
                                     <option value="'Montserrat', sans-serif">Montserrat</option>
                                     <option value="'Roboto', sans-serif">Roboto</option>
                                     <option value="'Arial', sans-serif">Arial</option>
-                                    <option value="'Georgia', serif">Georgia</option>
-                                    <option value="'Times New Roman', serif">Times New Roman</option>
                                 </select>
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">Body Font</label>
-                                <select id="font-body" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <select id="font-body" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white">
                                     <option value="'Montserrat', sans-serif">Montserrat</option>
                                     <option value="'Playfair Display', serif">Playfair Display</option>
                                     <option value="'Roboto', sans-serif">Roboto</option>
                                     <option value="'Arial', sans-serif">Arial</option>
-                                    <option value="'Open Sans', sans-serif">Open Sans</option>
-                                    <option value="'Helvetica', sans-serif">Helvetica</option>
                                 </select>
                             </div>
                         </div>
@@ -584,7 +444,7 @@
                         <div class="space-y-3">
                             <div>
                                 <label class="text-sm text-gray-300">Watermark Text</label>
-                                <input type="text" id="watermark-text" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" value="LETTER OF INTENT">
+                                <input type="text" id="watermark-text" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white" value="LETTER OF INTENT">
                             </div>
                             <div>
                                 <label class="text-sm text-gray-300">Watermark Opacity</label>
@@ -594,7 +454,7 @@
                         </div>
                     </div>
                     
-                    <button onclick="applyStyles()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                    <button onclick="applyStyles()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold">
                         Apply Styles
                     </button>
                 </div>
@@ -672,7 +532,7 @@
                         </div>
                     </div>
                     
-                    <button onclick="applyStructure()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                    <button onclick="applyStructure()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold">
                         Apply Structure Changes
                     </button>
                 </div>
@@ -684,10 +544,10 @@
                     <div class="bg-gray-800/50 p-4 rounded-lg">
                         <h4 class="font-bold text-blue-300 mb-3">Table Editor</h4>
                         <div class="space-y-3">
-                            <button onclick="addTableRow()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors">
+                            <button onclick="addTableRow()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">
                                 <i class="fas fa-plus mr-2"></i> Add Table Row
                             </button>
-                            <button onclick="removeTableRow()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition-colors">
+                            <button onclick="removeTableRow()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg">
                                 <i class="fas fa-minus mr-2"></i> Remove Last Row
                             </button>
                         </div>
@@ -696,10 +556,10 @@
                     <div class="bg-gray-800/50 p-4 rounded-lg">
                         <h4 class="font-bold text-blue-300 mb-3">Export/Import</h4>
                         <div class="space-y-3">
-                            <button onclick="exportData()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg transition-colors">
+                            <button onclick="exportData()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg">
                                 <i class="fas fa-file-export mr-2"></i> Export Data
                             </button>
-                            <button onclick="importData()" class="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-2 rounded-lg transition-colors">
+                            <button onclick="importData()" class="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-2 rounded-lg">
                                 <i class="fas fa-file-import mr-2"></i> Import Data
                             </button>
                             <input type="file" id="import-file" class="hidden" accept=".json">
@@ -709,10 +569,10 @@
                     <div class="bg-gray-800/50 p-4 rounded-lg">
                         <h4 class="font-bold text-blue-300 mb-3">Reset Options</h4>
                         <div class="space-y-2">
-                            <button onclick="resetToDefault()" class="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg transition-colors">
+                            <button onclick="resetToDefault()" class="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg">
                                 <i class="fas fa-undo mr-2"></i> Reset All Content
                             </button>
-                            <button onclick="clearAll()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition-colors">
+                            <button onclick="clearAll()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg">
                                 <i class="fas fa-trash mr-2"></i> Clear Everything
                             </button>
                         </div>
@@ -751,106 +611,18 @@
         <!-- Edit Popup -->
         <div id="edit-popup" class="edit-popup hidden">
             <div class="mb-3">
-                <h4 class="font-bold text-gray-800" id="edit-title">Edit Content</h4>
+                <h4 class="font-bold text-gray-800">Edit Content</h4>
                 <p class="text-sm text-gray-600" id="edit-label"></p>
             </div>
             <textarea id="edit-textarea" placeholder="Enter content here..."></textarea>
             <div class="flex gap-2 mt-3">
-                <button onclick="saveEdit()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded flex-1 transition-colors">
-                    Save Changes
+                <button onclick="saveEdit()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded flex-1">
+                    Save
                 </button>
-                <button onclick="cancelEdit()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded transition-colors">
+                <button onclick="cancelEdit()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded">
                     Cancel
                 </button>
             </div>
-        </div>
-        
-        <!-- Font Editor -->
-        <div id="font-editor" class="font-editor hidden">
-            <h4 class="font-bold text-gray-800 mb-3">Font Settings</h4>
-            <div class="space-y-3">
-                <div>
-                    <label class="text-sm text-gray-700 mb-1 block">Font Family</label>
-                    <select id="font-family-select" class="w-full p-2 border rounded">
-                        <option value="'Montserrat', sans-serif">Montserrat</option>
-                        <option value="'Playfair Display', serif">Playfair Display</option>
-                        <option value="'Roboto', sans-serif">Roboto</option>
-                        <option value="'Arial', sans-serif">Arial</option>
-                        <option value="'Georgia', serif">Georgia</option>
-                        <option value="'Times New Roman', serif">Times New Roman</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="text-sm text-gray-700 mb-1 block">Font Size</label>
-                    <select id="font-size-select" class="w-full p-2 border rounded">
-                        <option value="12px">12px</option>
-                        <option value="14px">14px</option>
-                        <option value="16px" selected>16px</option>
-                        <option value="18px">18px</option>
-                        <option value="20px">20px</option>
-                        <option value="24px">24px</option>
-                        <option value="28px">28px</option>
-                        <option value="32px">32px</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="text-sm text-gray-700 mb-1 block">Font Weight</label>
-                    <select id="font-weight-select" class="w-full p-2 border rounded">
-                        <option value="300">Light (300)</option>
-                        <option value="400" selected>Normal (400)</option>
-                        <option value="500">Medium (500)</option>
-                        <option value="600">Semi Bold (600)</option>
-                        <option value="700">Bold (700)</option>
-                        <option value="800">Extra Bold (800)</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="text-sm text-gray-700 mb-1 block">Text Color</label>
-                    <div class="color-picker-container">
-                        <input type="color" id="text-color-picker" value="#000000" class="cursor-pointer">
-                        <div id="text-color-preview" class="color-preview" style="background-color: #000000;"></div>
-                        <input type="text" id="text-color-hex" value="#000000" class="flex-1 p-2 border rounded text-sm">
-                    </div>
-                </div>
-                <div class="flex gap-2 mt-4">
-                    <button onclick="applyFontSettings()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded flex-1 transition-colors">
-                        Apply
-                    </button>
-                    <button onclick="closeFontEditor()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded transition-colors">
-                        Close
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Floating Toolbar -->
-        <div id="floating-toolbar" class="floating-toolbar hidden">
-            <button onclick="formatText('bold')" title="Bold">
-                <i class="fas fa-bold"></i>
-            </button>
-            <button onclick="formatText('italic')" title="Italic">
-                <i class="fas fa-italic"></i>
-            </button>
-            <button onclick="formatText('underline')" title="Underline">
-                <i class="fas fa-underline"></i>
-            </button>
-            <div class="w-px h-6 bg-gray-300"></div>
-            <button onclick="openFontEditor()" title="Font Settings">
-                <i class="fas fa-font"></i>
-            </button>
-            <button onclick="alignText('left')" title="Align Left">
-                <i class="fas fa-align-left"></i>
-            </button>
-            <button onclick="alignText('center')" title="Align Center">
-                <i class="fas fa-align-center"></i>
-            </button>
-            <button onclick="alignText('right')" title="Align Right">
-                <i class="fas fa-align-right"></i>
-            </button>
-            <div class="w-px h-6 bg-gray-300"></div>
-            <button onclick="closeFloatingToolbar()" title="Close">
-                <i class="fas fa-times"></i>
-            </button>
         </div>
         
         <!-- Add Product Modal -->
@@ -866,45 +638,21 @@
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">HSN/SAC Code</label>
-                            <input type="text" id="new-product-hsn" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., 0910.11.00">
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
-                                <input type="number" id="new-product-quantity" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., 12" step="0.01">
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Unit</label>
-                                <select id="new-product-unit" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    <option value="Metric Tons">Metric Tons</option>
-                                    <option value="Kg">Kg</option>
-                                    <option value="Units">Units</option>
-                                    <option value="Pieces">Pieces</option>
-                                    <option value="Boxes">Boxes</option>
-                                    <option value="Litres">Litres</option>
-                                </select>
-                            </div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                            <input type="text" id="new-product-quantity" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., 10 Metric Tons">
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Price per Unit (USD)</label>
-                            <input type="number" id="new-product-price" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., 32083.33" step="0.01">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Amount (USD)</label>
-                            <input type="text" id="new-product-amount" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50" placeholder="Auto-calculated" readonly>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Value</label>
+                            <input type="text" id="new-product-value" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., USD 250,000.00">
                         </div>
                     </div>
                     
                     <div class="flex gap-3 mt-6">
-                        <button onclick="saveNewProduct()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                        <button onclick="saveNewProduct()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg">
                             <i class="fas fa-plus mr-2"></i> Add Product
                         </button>
-                        <button onclick="closeAddProductModal()" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                        <button onclick="closeAddProductModal()" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 rounded-lg">
                             Cancel
                         </button>
                     </div>
@@ -919,9 +667,8 @@
         let changesMade = 0;
         let isEditingMode = true;
         let letterData = {};
-        let selectedTextElement = null;
         
-        // Default data structure
+        // Default data structure - COMPLETELY UPDATED with Opulence Group Indonesia details
         const defaultData = {
             header: {
                 companyLine1: "OPULENCE GROUP",
@@ -955,16 +702,23 @@
                 products: [
                     {
                         name: "Premium Grade Cardamom",
-                        hsn: "0910.11.00",
-                        quantity: "12",
-                        unit: "Metric Tons",
-                        price: "32,083.33",
-                        amount: "385,000.00"
+                        quantity: "12 Metric Tons",
+                        value: "USD 385,000.00"
                     }
                 ],
                 tableRows: [],
-                subtotal: "385,000.00",
-                total: "385,000.00"
+                shippingTerms: {
+                    origin: "JNPT, Navi Mumbai, India",
+                    destination: "Tanjung Priok, Jakarta, Indonesia",
+                    incoterms: "FOB (JNPT, India)"
+                },
+                paymentTerms: {
+                    advance: "60% upon signing contract",
+                    balance: "40% against Letter of Credit",
+                    lcType: "Irrevocable, Confirmed"
+                },
+                closing1: "We acknowledge that this Letter of Intent serves as a preliminary framework for further negotiations and does not constitute a binding agreement until a formal contract is executed by both parties.",
+                closing2: "We eagerly anticipate a mutually beneficial business relationship and look forward to your positive response."
             },
             signature: {
                 name: "DAMAI KHAMUIR",
@@ -984,16 +738,47 @@
                 primaryColor: "#1e3a8a",
                 secondaryColor: "#3b82f6",
                 headingFont: "'Playfair Display', serif",
-                bodyFont: "'Montserrat', sans-serif"
+                bodyFont: "'Montserrat', sans-serif",
+                watermarkText: "",
+                watermarkOpacity: 0.03
             }
         };
         
         // Initialize
         function init() {
             // Load data from localStorage or use default
-            const savedData = localStorage.getItem('opulenceGroupLetter');
+            const savedData = localStorage.getItem('damaiAgroLetter');
             if (savedData) {
                 letterData = JSON.parse(savedData);
+                if (!letterData.content.products) {
+                    letterData.content.products = [{
+                        name: "Premium Grade Cardamom",
+                        quantity: "12 Metric Tons",
+                        value: "USD 385,000.00"
+                    }];
+                }
+                // Ensure footer data exists
+                if (!letterData.footer) {
+                    letterData.footer = {
+                        address: "Tower Anugrah Floor 16 Office Garden E.3.8, Mega Kuningan Area, Dr. Ide Anak Street Agung Gde",
+                        copyright: "© 2023 Opulence Group Indonesia. All Rights Reserved.",
+                        phone: "+62 831-8271-8126",
+                        email: "purchasedaf@yahoo.com",
+                        companyName: "OPULENCE GROUP INDONESIA",
+                        tagline: "Global Trade & Investment Solutions"
+                    };
+                }
+                // Ensure header address exists
+                if (!letterData.header.headerAddress) {
+                    letterData.header.headerAddress = "Tower Anugrah Floor 16 Office Garden E.3.8, Mega Kuningan Area";
+                }
+                // Ensure footer company name and tagline exist
+                if (!letterData.footer.companyName) {
+                    letterData.footer.companyName = "OPULENCE GROUP INDONESIA";
+                }
+                if (!letterData.footer.tagline) {
+                    letterData.footer.tagline = "Global Trade & Investment Solutions";
+                }
                 updateTableFromProducts();
             } else {
                 letterData = JSON.parse(JSON.stringify(defaultData));
@@ -1020,215 +805,6 @@
             
             // Update status
             updateStatus();
-            
-            // Set up auto-calculate for product fields
-            setupAutoCalculate();
-            
-            // Setup color picker
-            setupColorPicker();
-            
-            // Setup text selection handling
-            setupTextSelection();
-        }
-        
-        // Setup text selection handling
-        function setupTextSelection() {
-            document.addEventListener('selectionchange', function() {
-                const selection = window.getSelection();
-                if (selection.rangeCount > 0 && !selection.isCollapsed) {
-                    const range = selection.getRangeAt(0);
-                    const parentElement = range.commonAncestorContainer.parentElement;
-                    
-                    if (parentElement.classList.contains('editable') || parentElement.classList.contains('table-editable')) {
-                        selectedTextElement = parentElement;
-                        showFloatingToolbar(range);
-                    }
-                }
-            });
-        }
-        
-        // Show floating toolbar
-        function showFloatingToolbar(range) {
-            const toolbar = document.getElementById('floating-toolbar');
-            const rect = range.getBoundingClientRect();
-            
-            toolbar.style.top = (rect.top + window.scrollY - 50) + 'px';
-            toolbar.style.left = (rect.left + window.scrollX + rect.width/2 - 100) + 'px';
-            toolbar.classList.remove('hidden');
-        }
-        
-        // Close floating toolbar
-        function closeFloatingToolbar() {
-            document.getElementById('floating-toolbar').classList.add('hidden');
-            selectedTextElement = null;
-        }
-        
-        // Format text
-        function formatText(format) {
-            if (!selectedTextElement) return;
-            
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const selectedText = range.toString();
-                
-                if (selectedText) {
-                    let formattedText = selectedText;
-                    
-                    switch(format) {
-                        case 'bold':
-                            formattedText = `<strong>${selectedText}</strong>`;
-                            break;
-                        case 'italic':
-                            formattedText = `<em>${selectedText}</em>`;
-                            break;
-                        case 'underline':
-                            formattedText = `<u>${selectedText}</u>`;
-                            break;
-                    }
-                    
-                    const span = document.createElement('span');
-                    span.innerHTML = formattedText;
-                    range.deleteContents();
-                    range.insertNode(span);
-                    
-                    // Update data
-                    updateElementData(selectedTextElement);
-                }
-            }
-            
-            closeFloatingToolbar();
-        }
-        
-        // Align text
-        function alignText(alignment) {
-            if (!selectedTextElement) return;
-            
-            selectedTextElement.style.textAlign = alignment;
-            updateElementData(selectedTextElement);
-            closeFloatingToolbar();
-        }
-        
-        // Open font editor
-        function openFontEditor() {
-            if (!selectedTextElement) return;
-            
-            const fontEditor = document.getElementById('font-editor');
-            const rect = selectedTextElement.getBoundingClientRect();
-            
-            // Get current styles
-            const computedStyle = window.getComputedStyle(selectedTextElement);
-            const currentFont = computedStyle.fontFamily;
-            const currentSize = computedStyle.fontSize;
-            const currentWeight = computedStyle.fontWeight;
-            const currentColor = computedStyle.color;
-            
-            // Set current values
-            document.getElementById('font-family-select').value = currentFont;
-            document.getElementById('font-size-select').value = currentSize;
-            document.getElementById('font-weight-select').value = currentWeight;
-            document.getElementById('text-color-picker').value = rgbToHex(currentColor);
-            document.getElementById('text-color-hex').value = rgbToHex(currentColor);
-            document.getElementById('text-color-preview').style.backgroundColor = rgbToHex(currentColor);
-            
-            // Position and show editor
-            fontEditor.style.top = (rect.bottom + window.scrollY + 10) + 'px';
-            fontEditor.style.left = (rect.left + window.scrollX) + 'px';
-            fontEditor.classList.remove('hidden');
-            
-            closeFloatingToolbar();
-        }
-        
-        // Close font editor
-        function closeFontEditor() {
-            document.getElementById('font-editor').classList.add('hidden');
-        }
-        
-        // Apply font settings
-        function applyFontSettings() {
-            if (!selectedTextElement) return;
-            
-            const fontFamily = document.getElementById('font-family-select').value;
-            const fontSize = document.getElementById('font-size-select').value;
-            const fontWeight = document.getElementById('font-weight-select').value;
-            const textColor = document.getElementById('text-color-picker').value;
-            
-            selectedTextElement.style.fontFamily = fontFamily;
-            selectedTextElement.style.fontSize = fontSize;
-            selectedTextElement.style.fontWeight = fontWeight;
-            selectedTextElement.style.color = textColor;
-            
-            updateElementData(selectedTextElement);
-            closeFontEditor();
-        }
-        
-        // RGB to Hex converter
-        function rgbToHex(rgb) {
-            if (rgb.startsWith('#')) return rgb;
-            
-            const result = rgb.match(/\d+/g);
-            if (!result) return '#000000';
-            
-            const r = parseInt(result[0]);
-            const g = parseInt(result[1]);
-            const b = parseInt(result[2]);
-            
-            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-        }
-        
-        // Setup color picker
-        function setupColorPicker() {
-            const picker = document.getElementById('text-color-picker');
-            const hex = document.getElementById('text-color-hex');
-            const preview = document.getElementById('text-color-preview');
-            
-            picker.addEventListener('input', function() {
-                hex.value = this.value;
-                preview.style.backgroundColor = this.value;
-            });
-            
-            hex.addEventListener('input', function() {
-                const color = this.value.startsWith('#') ? this.value : '#' + this.value;
-                picker.value = color;
-                preview.style.backgroundColor = color;
-            });
-        }
-        
-        // Update element data
-        function updateElementData(element) {
-            const editPath = element.getAttribute('data-edit');
-            if (!editPath) return;
-            
-            let target = letterData;
-            const keys = editPath.split('.');
-            
-            for (let i = 0; i < keys.length - 1; i++) {
-                if (!target[keys[i]]) target[keys[i]] = {};
-                target = target[keys[i]];
-            }
-            
-            // Preserve HTML formatting
-            target[keys[keys.length - 1]] = element.innerHTML;
-            
-            changesMade++;
-            updateStatus();
-        }
-        
-        // Set up auto-calculation for product fields
-        function setupAutoCalculate() {
-            const quantityInput = document.getElementById('product-quantity');
-            const priceInput = document.getElementById('product-price');
-            const amountInput = document.getElementById('product-amount');
-            
-            const calculateAmount = () => {
-                const quantity = parseFloat(quantityInput.value.replace(/,/g, '')) || 0;
-                const price = parseFloat(priceInput.value.replace(/,/g, '')) || 0;
-                const amount = quantity * price;
-                amountInput.value = amount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-            };
-            
-            quantityInput.addEventListener('input', calculateAmount);
-            priceInput.addEventListener('input', calculateAmount);
         }
         
         // Initialize form inputs with current data
@@ -1244,11 +820,11 @@
             document.getElementById('company-tagline').value = letterData.header.tagline;
             document.getElementById('company-phone').value = letterData.header.phone;
             document.getElementById('company-email').value = letterData.header.email;
-            document.getElementById('header-address').value = letterData.header.headerAddress;
-            document.getElementById('footer-address').value = letterData.footer.address;
-            document.getElementById('copyright-text').value = letterData.footer.copyright;
-            document.getElementById('footer-company').value = letterData.footer.companyName;
-            document.getElementById('footer-tagline').value = letterData.footer.tagline;
+            document.getElementById('header-address').value = letterData.header.headerAddress || "Tower Anugrah Floor 16 Office Garden E.3.8, Mega Kuningan Area";
+            document.getElementById('footer-address').value = letterData.footer.address || "Tower Anugrah Floor 16 Office Garden E.3.8, Mega Kuningan Area, Dr. Ide Anak Street Agung Gde";
+            document.getElementById('copyright-text').value = letterData.footer.copyright || "© 2023 Opulence Group Indonesia. All Rights Reserved.";
+            document.getElementById('footer-company').value = letterData.footer.companyName || "OPULENCE GROUP INDONESIA";
+            document.getElementById('footer-tagline').value = letterData.footer.tagline || "Global Trade & Investment Solutions";
             
             // Address Details
             document.getElementById('from-company').value = letterData.addresses.fromCompany;
@@ -1257,14 +833,11 @@
             document.getElementById('from-address2').value = letterData.addresses.fromAddress2;
             document.getElementById('from-address3').value = letterData.addresses.fromAddress3;
             
-            // Product Details
-            const firstProduct = letterData.content.products[0] || { name: "", hsn: "", quantity: "", unit: "Metric Tons", price: "", amount: "" };
+            // Product Details - Use first product
+            const firstProduct = letterData.content.products[0] || { name: "", quantity: "", value: "" };
             document.getElementById('product-name').value = firstProduct.name;
-            document.getElementById('product-hsn').value = firstProduct.hsn;
             document.getElementById('product-quantity').value = firstProduct.quantity;
-            document.getElementById('product-unit').value = firstProduct.unit || "Metric Tons";
-            document.getElementById('product-price').value = firstProduct.price;
-            document.getElementById('product-amount').value = firstProduct.amount;
+            document.getElementById('product-value').value = firstProduct.value;
             
             // Signature Details
             document.getElementById('signatory-name').value = letterData.signature.name;
@@ -1275,6 +848,9 @@
             document.getElementById('color-secondary').value = letterData.styles.secondaryColor;
             document.getElementById('font-heading').value = letterData.styles.headingFont;
             document.getElementById('font-body').value = letterData.styles.bodyFont;
+            document.getElementById('watermark-text').value = letterData.styles.watermarkText;
+            document.getElementById('watermark-opacity').value = Math.round(letterData.styles.watermarkOpacity * 100 / 10);
+            document.getElementById('opacity-value').textContent = Math.round(letterData.styles.watermarkOpacity * 100) + "%";
         }
         
         // Update products list in sidebar
@@ -1290,10 +866,7 @@
                         <div class="flex justify-between items-start">
                             <div class="flex-1">
                                 <div class="font-semibold text-white">${product.name}</div>
-                                <div class="text-sm text-gray-300">
-                                    ${product.quantity} ${product.unit} × ${product.price} = ${product.amount} USD
-                                </div>
-                                <div class="text-xs text-gray-400 mt-1">HSN: ${product.hsn}</div>
+                                <div class="text-sm text-gray-300">${product.quantity} - ${product.value}</div>
                             </div>
                             <button onclick="removeProduct(${index})" class="ml-2 text-red-400 hover:text-red-300">
                                 <i class="fas fa-times"></i>
@@ -1307,43 +880,116 @@
             }
         }
         
-        // Update table from products
+        // Open add product modal
+        function openAddProductModal() {
+            document.getElementById('add-product-modal').classList.remove('hidden');
+            document.getElementById('new-product-name').focus();
+        }
+        
+        // Close add product modal
+        function closeAddProductModal() {
+            document.getElementById('add-product-modal').classList.add('hidden');
+            // Clear inputs
+            document.getElementById('new-product-name').value = '';
+            document.getElementById('new-product-quantity').value = '';
+            document.getElementById('new-product-value').value = '';
+        }
+        
+        // Save new product
+        function saveNewProduct() {
+            const name = document.getElementById('new-product-name').value.trim();
+            const quantity = document.getElementById('new-product-quantity').value.trim();
+            const value = document.getElementById('new-product-value').value.trim();
+            
+            if (!name || !quantity || !value) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Add new product
+            if (!letterData.content.products) {
+                letterData.content.products = [];
+            }
+            
+            letterData.content.products.push({
+                name: name,
+                quantity: quantity,
+                value: value
+            });
+            
+            // Update products list
+            updateProductsList();
+            
+            // Update table rows based on products
+            updateTableFromProducts();
+            
+            // Close modal
+            closeAddProductModal();
+            
+            // Re-render letter
+            renderLetter();
+            
+            // Show success message
+            showNotification('Product added successfully!', 'success');
+            changesMade++;
+            updateStatus();
+        }
+        
+        // Remove product
+        function removeProduct(index) {
+            if (confirm('Are you sure you want to remove this product?')) {
+                letterData.content.products.splice(index, 1);
+                updateProductsList();
+                updateTableFromProducts();
+                renderLetter();
+                showNotification('Product removed!', 'success');
+                changesMade++;
+                updateStatus();
+            }
+        }
+        
+        // Update table from products - FIXED VERSION
         function updateTableFromProducts() {
             // Clear existing table rows
             letterData.content.tableRows = [];
             
-            let subtotal = 0;
-            
             if (letterData.content.products && letterData.content.products.length > 0) {
-                // Add header row
-                letterData.content.tableRows.push([
-                    "Item Name",
-                    "HSN/SAC",
-                    "Quantity",
-                    "Unit",
-                    "Price/Unit (USD)",
-                    "Amount (USD)"
-                ]);
-                
-                // Add each product row
+                // Add each product as separate rows in the table
                 letterData.content.products.forEach((product, index) => {
-                    const amount = parseFloat(product.amount.replace(/[^0-9.]/g, '')) || 0;
-                    subtotal += amount;
+                    // Add product name row
+                    letterData.content.tableRows.push([`Product ${index + 1}`, product.name]);
                     
-                    letterData.content.tableRows.push([
-                        product.name,
-                        product.hsn,
-                        product.quantity,
-                        product.unit,
-                        product.price,
-                        product.amount
-                    ]);
+                    // Add quantity row
+                    letterData.content.tableRows.push([`Quantity ${index + 1}`, product.quantity]);
+                    
+                    // Add value row
+                    letterData.content.tableRows.push([`Value ${index + 1}`, product.value]);
+                    
+                    // Add empty separator row between products (except after last product)
+                    if (index < letterData.content.products.length - 1) {
+                        letterData.content.tableRows.push(["", ""]);
+                    }
                 });
                 
-                // Add subtotal and total rows
-                letterData.content.subtotal = subtotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                letterData.content.total = subtotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                // Add total value row
+                let totalValue = 0;
+                letterData.content.products.forEach(product => {
+                    const valueStr = product.value.replace(/[^0-9.]/g, '');
+                    const value = parseFloat(valueStr) || 0;
+                    totalValue += value;
+                });
+                
+                // Add separator before total
+                if (letterData.content.products.length > 0) {
+                    letterData.content.tableRows.push(["", ""]);
+                }
+                
+                letterData.content.tableRows.push(["Total Contract Value", `USD ${totalValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`]);
             }
+            
+            // Add other rows after products
+            letterData.content.tableRows.push(["Delivery Schedule", "Within 35 days from Purchase Order date"]);
+            letterData.content.tableRows.push(["Documentation Requirements", "• Certificate of Origin<br>• Quality Inspection Certificate<br>• Phytosanitary Certificate"]);
         }
         
         // Render the letter
@@ -1375,12 +1021,9 @@
             
             // Make elements editable
             makeElementsEditable();
-            
-            // Calculate word count
-            calculateWordCount();
         }
         
-        // Render header section
+        // Render header section - UPDATED WITH EDITABLE ADDRESS
         function renderHeader() {
             const section = document.createElement('div');
             section.className = 'mb-12';
@@ -1505,85 +1148,43 @@
             return section;
         }
         
-        // Render table - FIXED VERSION
+        // Render table
         function renderTable() {
             const section = document.createElement('div');
             section.className = 'overflow-x-auto my-8';
             
             let tableRowsHTML = '';
-            
-            // Add header row
-            tableRowsHTML += `
-                <tr class="bg-gradient-to-r from-blue-50 to-blue-100">
-                    <th class="border border-gray-300 px-4 py-3 text-left font-bold text-gray-800 text-sm">Item Name</th>
-                    <th class="border border-gray-300 px-4 py-3 text-left font-bold text-gray-800 text-sm">HSN/SAC</th>
-                    <th class="border border-gray-300 px-4 py-3 text-left font-bold text-gray-800 text-sm">Quantity</th>
-                    <th class="border border-gray-300 px-4 py-3 text-left font-bold text-gray-800 text-sm">Unit</th>
-                    <th class="border border-gray-300 px-4 py-3 text-left font-bold text-gray-800 text-sm">Price/Unit (USD)</th>
-                    <th class="border border-gray-300 px-4 py-3 text-left font-bold text-gray-800 text-sm">Amount (USD)</th>
-                </tr>
-            `;
-            
-            // Add product rows - FIXED: Added table-editable class and proper event listeners
-            letterData.content.products.forEach((product, index) => {
+            letterData.content.tableRows.forEach((row, index) => {
+                const isEmptyRow = row[0] === "" && row[1] === "";
                 tableRowsHTML += `
-                    <tr class="hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
-                        <td class="border border-gray-300 px-4 py-3 table-editable" 
-                            data-edit="content.products.${index}.name" 
+                    <tr class="${index % 2 === 0 && !isEmptyRow ? 'hover:bg-gray-50' : !isEmptyRow ? 'hover:bg-gray-50 bg-gray-50' : ''} ${isEmptyRow ? 'h-4' : ''}">
+                        <td class="border border-gray-300 px-6 py-4 ${isEmptyRow ? 'border-none' : ''} ${row[0].includes('Product') || row[0].includes('Total') ? 'font-semibold' : ''}" 
+                            data-edit="content.tableRows.${index}.0" 
                             data-index="${index}" 
-                            data-field="name">${product.name}</td>
-                        <td class="border border-gray-300 px-4 py-3 table-editable" 
-                            data-edit="content.products.${index}.hsn" 
+                            data-col="0">
+                            ${row[0]}
+                        </td>
+                        <td class="border border-gray-300 px-6 py-4 ${isEmptyRow ? 'border-none' : ''}" 
+                            data-edit="content.tableRows.${index}.1" 
                             data-index="${index}" 
-                            data-field="hsn">${product.hsn}</td>
-                        <td class="border border-gray-300 px-4 py-3 text-right table-editable" 
-                            data-edit="content.products.${index}.quantity" 
-                            data-index="${index}" 
-                            data-field="quantity">${product.quantity}</td>
-                        <td class="border border-gray-300 px-4 py-3 table-editable" 
-                            data-edit="content.products.${index}.unit" 
-                            data-index="${index}" 
-                            data-field="unit">${product.unit}</td>
-                        <td class="border border-gray-300 px-4 py-3 text-right table-editable" 
-                            data-edit="content.products.${index}.price" 
-                            data-index="${index}" 
-                            data-field="price">${product.price}</td>
-                        <td class="border border-gray-300 px-4 py-3 text-right font-medium table-editable" 
-                            data-edit="content.products.${index}.amount" 
-                            data-index="${index}" 
-                            data-field="amount">${product.amount}</td>
+                            data-col="1">
+                            ${row[1]}
+                        </td>
                     </tr>
                 `;
             });
             
-            // Add empty row for spacing
-            tableRowsHTML += `
-                <tr>
-                    <td colspan="6" class="py-2"></td>
-                </tr>
-            `;
-            
-            // Add subtotal and total rows - FIXED: Added table-editable class
-            tableRowsHTML += `
-                <tr class="border-t-2 border-gray-300">
-                    <td colspan="4" class="px-4 py-3"></td>
-                    <td class="border border-gray-300 px-4 py-3 bg-gray-100 font-bold text-right">Sub Total</td>
-                    <td class="border border-gray-300 px-4 py-3 bg-gray-100 font-bold text-right table-editable" 
-                        data-edit="content.subtotal">${letterData.content.subtotal}</td>
-                </tr>
-                <tr>
-                    <td colspan="4" class="px-4 py-3"></td>
-                    <td class="border border-gray-300 px-4 py-3 bg-blue-100 font-bold text-right text-blue-800">Total</td>
-                    <td class="border border-gray-300 px-4 py-3 bg-blue-100 font-bold text-right text-blue-800 table-editable" 
-                        data-edit="content.total">${letterData.content.total}</td>
-                </tr>
-            `;
-            
             section.innerHTML = `
-                <table class="w-full border-collapse border border-gray-300 shadow-sm text-sm">
-                    <thead>
-                        ${tableRowsHTML}
+                <table class="w-full border-collapse border border-gray-300 shadow-sm">
+                    <thead class="bg-gradient-to-r from-blue-50 to-blue-100">
+                        <tr>
+                            <th class="border border-gray-300 px-6 py-4 text-left font-bold text-gray-800">Description</th>
+                            <th class="border border-gray-300 px-6 py-4 text-left font-bold text-gray-800">Specifications</th>
+                        </tr>
                     </thead>
+                    <tbody>
+                        ${tableRowsHTML}
+                    </tbody>
                 </table>
             `;
             return section;
@@ -1619,7 +1220,7 @@
             return section;
         }
         
-        // Render footer
+        // Render footer - UPDATED VERSION (Editable company name and tagline, phone in single line, email removed)
         function renderFooter() {
             const section = document.createElement('footer');
             section.className = 'bg-gray-900 text-white py-8 mt-12 rounded-xl';
@@ -1648,6 +1249,7 @@
                                     <i class="fas fa-phone mr-2"></i>
                                     <span data-edit="footer.phone">${letterData.footer.phone}</span>
                                 </span>
+                                <!-- Email removed as requested -->
                             </div>
                             <p class="text-gray-400 text-sm" data-edit="footer.copyright">
                                 ${letterData.footer.copyright}
@@ -1659,40 +1261,16 @@
             return section;
         }
         
-        // Apply styles to letter
-        function applyStylesToLetter() {
-            const container = document.getElementById('letter-container');
-            
-            // Update heading font
-            const headings = container.querySelectorAll('[class*="text-4xl"], [class*="text-5xl"], [class*="text-3xl"]');
-            headings.forEach(h => {
-                h.style.fontFamily = letterData.styles.headingFont;
-            });
-            
-            // Update body font
-            const bodyElements = container.querySelectorAll('p, span, td');
-            bodyElements.forEach(el => {
-                if (!el.style.fontFamily) {
-                    el.style.fontFamily = letterData.styles.bodyFont;
-                }
-            });
-        }
-        
-        // Make elements editable - FIXED VERSION
+        // Make elements editable
         function makeElementsEditable() {
-            // Regular editable elements
             const editableElements = document.querySelectorAll('[data-edit]');
             
             editableElements.forEach(element => {
                 // Add editable class
                 element.classList.add('editable');
                 
-                // Remove existing event listeners
-                const newElement = element.cloneNode(true);
-                element.parentNode.replaceChild(newElement, element);
-                
-                // Add click event for direct editing
-                newElement.addEventListener('click', function(e) {
+                // Add click event
+                element.addEventListener('click', function(e) {
                     if (!isEditingMode) return;
                     
                     e.stopPropagation();
@@ -1700,19 +1278,10 @@
                 });
             });
             
-            // Table editable elements
-            const tableEditableElements = document.querySelectorAll('.table-editable');
-            
-            tableEditableElements.forEach(element => {
-                // Add editable class
-                element.classList.add('editable');
-                
-                // Remove existing event listeners
-                const newElement = element.cloneNode(true);
-                element.parentNode.replaceChild(newElement, element);
-                
-                // Add click event for direct editing
-                newElement.addEventListener('click', function(e) {
+            // Add table cell editing
+            const tableCells = document.querySelectorAll('td[data-edit]');
+            tableCells.forEach(cell => {
+                cell.addEventListener('click', function(e) {
                     if (!isEditingMode) return;
                     
                     e.stopPropagation();
@@ -1721,7 +1290,7 @@
             });
         }
         
-        // Start editing an element - FIXED for table cells
+        // Start editing an element
         function startEditing(element) {
             if (currentEditingElement) {
                 currentEditingElement.classList.remove('editing');
@@ -1734,77 +1303,44 @@
             const popup = document.getElementById('edit-popup');
             const textarea = document.getElementById('edit-textarea');
             const label = document.getElementById('edit-label');
-            const title = document.getElementById('edit-title');
             
-            // Get current value
+            // Get current value based on edit path
             let currentValue = getValueByPath(letterData, editPath);
             
-            // Special handling for table cells
-            if (editPath.startsWith('content.products')) {
+            // For table cells, get the specific value
+            if (editPath.startsWith('content.tableRows')) {
                 const index = element.getAttribute('data-index');
-                const field = element.getAttribute('data-field');
-                const product = letterData.content.products[index];
-                currentValue = product ? product[field] : '';
-                
-                title.textContent = 'Edit Product';
-                label.textContent = `Editing: ${field.charAt(0).toUpperCase() + field.slice(1)}`;
-            } else if (editPath === 'content.subtotal') {
-                title.textContent = 'Edit Sub Total';
-                label.textContent = 'Editing: Sub Total Amount';
-            } else if (editPath === 'content.total') {
-                title.textContent = 'Edit Total';
-                label.textContent = 'Editing: Total Amount';
-            } else {
-                title.textContent = 'Edit Content';
-                label.textContent = `Editing: ${editPath}`;
+                const col = element.getAttribute('data-col');
+                currentValue = letterData.content.tableRows[index][col];
             }
             
+            // Set label and value
+            label.textContent = `Editing: ${editPath}`;
             textarea.value = currentValue;
             
-            // Position popup
+            // Position popup near the element
             const rect = element.getBoundingClientRect();
-            popup.style.top = `${rect.bottom + window.scrollY + 10}px`;
+            popup.style.top = `${rect.top + window.scrollY}px`;
             popup.style.left = `${rect.left + window.scrollX}px`;
             popup.classList.remove('hidden');
             
             // Focus textarea
-            setTimeout(() => {
-                textarea.focus();
-                textarea.select();
-            }, 100);
+            textarea.focus();
         }
         
-        // Save edit - FIXED for table cells
+        // Save edit
         function saveEdit() {
             if (!currentEditingElement) return;
             
             const editPath = currentEditingElement.getAttribute('data-edit');
             const newValue = document.getElementById('edit-textarea').value;
             
-            // Special handling for table cells
-            if (editPath.startsWith('content.products')) {
+            // Update data based on edit path
+            if (editPath.startsWith('content.tableRows')) {
                 const index = currentEditingElement.getAttribute('data-index');
-                const field = currentEditingElement.getAttribute('data-field');
-                
-                if (letterData.content.products[index]) {
-                    letterData.content.products[index][field] = newValue;
-                    
-                    // Recalculate amount if quantity or price changed
-                    if (field === 'quantity' || field === 'price') {
-                        const product = letterData.content.products[index];
-                        const quantity = parseFloat(product.quantity.replace(/[^0-9.]/g, '')) || 0;
-                        const price = parseFloat(product.price.replace(/[^0-9.]/g, '')) || 0;
-                        product.amount = (quantity * price).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                        
-                        // Update subtotal and total
-                        updateTableFromProducts();
-                    }
-                    
-                    // Update products list in sidebar
-                    updateProductsList();
-                }
+                const col = currentEditingElement.getAttribute('data-col');
+                letterData.content.tableRows[index][col] = newValue;
             } else {
-                // Update data for regular fields
                 setValueByPath(letterData, editPath, newValue);
             }
             
@@ -1814,18 +1350,12 @@
             // Close popup
             cancelEdit();
             
-            // If editing a product field, re-render the entire table
-            if (editPath.startsWith('content.products')) {
-                // Re-render letter to show updated table
-                renderLetter();
-            }
-            
             // Increment changes
             changesMade++;
             updateStatus();
             
-            // Show success notification
-            showNotification('Edit saved successfully!', 'success');
+            // Update word count
+            calculateWordCount();
         }
         
         // Cancel edit
@@ -1840,34 +1370,18 @@
         
         // Get value by path
         function getValueByPath(obj, path) {
-            const keys = path.split('.');
-            let result = obj;
-            
-            for (const key of keys) {
-                if (result[key] !== undefined) {
-                    result = result[key];
-                } else {
-                    return '';
-                }
-            }
-            
-            return result;
+            return path.split('.').reduce((o, p) => o[p], obj);
         }
         
         // Set value by path
         function setValueByPath(obj, path, value) {
             const keys = path.split('.');
-            let current = obj;
-            
-            for (let i = 0; i < keys.length - 1; i++) {
-                if (!current[keys[i]]) current[keys[i]] = {};
-                current = current[keys[i]];
-            }
-            
-            current[keys[keys.length - 1]] = value;
+            const lastKey = keys.pop();
+            const target = keys.reduce((o, p) => o[p], obj);
+            target[lastKey] = value;
         }
         
-        // Apply quick edits
+        // Apply quick edits from form - UPDATED WITH NEW FIELDS
         function applyQuickEdits() {
             // Update data from form inputs
             letterData.content.title = document.getElementById('quick-title').value;
@@ -1887,26 +1401,18 @@
             letterData.addresses.fromAddress2 = document.getElementById('from-address2').value;
             letterData.addresses.fromAddress3 = document.getElementById('from-address3').value;
             
-            // Update first product
+            // Update first product if exists
             if (letterData.content.products && letterData.content.products.length > 0) {
                 letterData.content.products[0].name = document.getElementById('product-name').value;
-                letterData.content.products[0].hsn = document.getElementById('product-hsn').value;
                 letterData.content.products[0].quantity = document.getElementById('product-quantity').value;
-                letterData.content.products[0].unit = document.getElementById('product-unit').value;
-                letterData.content.products[0].price = document.getElementById('product-price').value;
-                
-                // Recalculate amount
-                const quantity = parseFloat(letterData.content.products[0].quantity.replace(/[^0-9.]/g, '')) || 0;
-                const price = parseFloat(letterData.content.products[0].price.replace(/[^0-9.]/g, '')) || 0;
-                letterData.content.products[0].amount = (quantity * price).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                
+                letterData.content.products[0].value = document.getElementById('product-value').value;
                 updateTableFromProducts();
                 updateProductsList();
             }
             
             letterData.signature.name = document.getElementById('signatory-name').value;
             letterData.signature.designation = document.getElementById('signatory-designation').value;
-            letterData.signature.company = letterData.footer.companyName;
+            letterData.signature.company = letterData.footer.companyName; // Update signature company
             
             // Update footer data
             letterData.footer.address = document.getElementById('footer-address').value;
@@ -1931,12 +1437,212 @@
             letterData.styles.secondaryColor = document.getElementById('color-secondary').value;
             letterData.styles.headingFont = document.getElementById('font-heading').value;
             letterData.styles.bodyFont = document.getElementById('font-body').value;
+            letterData.styles.watermarkText = document.getElementById('watermark-text').value;
+            letterData.styles.watermarkOpacity = document.getElementById('watermark-opacity').value / 100;
             
+            // Update opacity display
+            document.getElementById('opacity-value').textContent = 
+                Math.round(letterData.styles.watermarkOpacity * 100) + "%";
+            
+            // Apply styles to letter
             applyStylesToLetter();
             
             showNotification('Styles applied successfully!', 'success');
             changesMade++;
             updateStatus();
+        }
+        
+        // Apply styles to letter
+        function applyStylesToLetter() {
+            // Update CSS variables or inline styles
+            const container = document.getElementById('letter-container');
+            
+            // Update heading font
+            const headings = container.querySelectorAll('[class*="text-4xl"], [class*="text-5xl"], [class*="text-3xl"]');
+            headings.forEach(h => {
+                h.style.fontFamily = letterData.styles.headingFont;
+            });
+            
+            // Update primary color elements
+            const primaryColorElements = container.querySelectorAll('.text-blue-900, .from-blue-900');
+            primaryColorElements.forEach(el => {
+                if (el.classList.contains('text-blue-900')) {
+                    el.style.color = letterData.styles.primaryColor;
+                }
+                if (el.classList.contains('from-blue-900')) {
+                    el.style.background = `linear-gradient(to right, ${letterData.styles.primaryColor}, ${letterData.styles.secondaryColor})`;
+                }
+            });
+        }
+        
+        // Apply structure changes
+        function applyStructure() {
+            showNotification('Structure changes applied!', 'info');
+            // Note: Full structure reordering would require more complex implementation
+        }
+        
+        // Add table row
+        function addTableRow() {
+            letterData.content.tableRows.push(["New Description", "New Value"]);
+            renderLetter();
+            showNotification('Table row added!', 'success');
+            changesMade++;
+            updateStatus();
+        }
+        
+        // Remove table row
+        function removeTableRow() {
+            if (letterData.content.tableRows.length > 1) {
+                letterData.content.tableRows.pop();
+                renderLetter();
+                showNotification('Last table row removed!', 'success');
+                changesMade++;
+                updateStatus();
+            } else {
+                showNotification('Cannot remove the last row!', 'error');
+            }
+        }
+        
+        // Export data
+        function exportData() {
+            const dataStr = JSON.stringify(letterData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `opulence-group-letter-${new Date().toISOString().slice(0,10)}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showNotification('Data exported successfully!', 'success');
+        }
+        
+        // Import data
+        function importData() {
+            document.getElementById('import-file').click();
+        }
+        
+        // Handle file import
+        document.getElementById('import-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const importedData = JSON.parse(event.target.result);
+                    letterData = importedData;
+                    if (!letterData.content.products) {
+                        letterData.content.products = [{
+                            name: "Premium Grade Cardamom",
+                            quantity: "12 Metric Tons",
+                            value: "USD 385,000.00"
+                        }];
+                    }
+                    // Ensure footer data exists
+                    if (!letterData.footer) {
+                        letterData.footer = {
+                            address: "Tower Anugrah Floor 16 Office Garden E.3.8, Mega Kuningan Area, Dr. Ide Anak Street Agung Gde",
+                            copyright: "© 2023 Opulence Group Indonesia. All Rights Reserved.",
+                            phone: "+62 831-8271-8126",
+                            email: "purchasedaf@yahoo.com",
+                            companyName: "OPULENCE GROUP INDONESIA",
+                            tagline: "Global Trade & Investment Solutions"
+                        };
+                    }
+                    // Ensure header address exists
+                    if (!letterData.header.headerAddress) {
+                        letterData.header.headerAddress = "Tower Anugrah Floor 16 Office Garden E.3.8, Mega Kuningan Area";
+                    }
+                    // Ensure footer company name and tagline exist
+                    if (!letterData.footer.companyName) {
+                        letterData.footer.companyName = "OPULENCE GROUP INDONESIA";
+                    }
+                    if (!letterData.footer.tagline) {
+                        letterData.footer.tagline = "Global Trade & Investment Solutions";
+                    }
+                    updateTableFromProducts();
+                    initializeFormInputs();
+                    updateProductsList();
+                    renderLetter();
+                    showNotification('Data imported successfully!', 'success');
+                    changesMade = 0;
+                    updateStatus();
+                } catch (error) {
+                    showNotification('Error importing file!', 'error');
+                    console.error(error);
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset file input
+            e.target.value = '';
+        });
+        
+        // Reset to default
+        function resetToDefault() {
+            if (confirm('Are you sure you want to reset to default values? All changes will be lost.')) {
+                letterData = JSON.parse(JSON.stringify(defaultData));
+                updateTableFromProducts();
+                initializeFormInputs();
+                updateProductsList();
+                renderLetter();
+                showNotification('Reset to default values!', 'info');
+                changesMade = 0;
+                updateStatus();
+            }
+        }
+        
+        // Clear all
+        function clearAll() {
+            if (confirm('Are you sure you want to clear everything? This cannot be undone.')) {
+                letterData = {
+                    header: { 
+                        companyLine1: "", 
+                        companyLine2: "", 
+                        tagline: "", 
+                        phone: "", 
+                        email: "", 
+                        documentType: "", 
+                        date: "", 
+                        reference: "",
+                        logoUrl: "https://araldomqfedor-blip.github.io/loi/loko.png",
+                        headerAddress: ""
+                    },
+                    addresses: { fromCompany: "", fromAddress1: "", fromAddress2: "", fromAddress3: "", toCompany: "", toAddress1: "", toAddress2: "", toAddress3: "" },
+                    content: { 
+                        title: "", 
+                        salutation: "", 
+                        paragraph1: "", 
+                        addressQuote: "", 
+                        paragraph2: "", 
+                        paragraph3: "", 
+                        products: [],
+                        tableRows: [],
+                        shippingTerms: { origin: "", destination: "", incoterms: "" }, 
+                        paymentTerms: { advance: "", balance: "", lcType: "" }, 
+                        closing1: "", 
+                        closing2: "" 
+                    },
+                    signature: { name: "", designation: "", company: "", date: "" },
+                    footer: {
+                        address: "",
+                        copyright: "",
+                        phone: "",
+                        email: "",
+                        companyName: "",
+                        tagline: ""
+                    },
+                    styles: letterData.styles
+                };
+                initializeFormInputs();
+                updateProductsList();
+                renderLetter();
+                showNotification('All content cleared!', 'warning');
+                changesMade = 0;
+                updateStatus();
+            }
         }
         
         // Save changes
@@ -1974,12 +1680,16 @@
                 link.click();
                 
                 showNotification('Image downloaded successfully!', 'success');
+            }).catch(error => {
+                console.error('Error generating image:', error);
+                showNotification('Error generating image!', 'error');
             });
         }
         
-        // Download as PDF
+        // Download as PDF (simulated)
         function downloadAsPDF() {
             showNotification('PDF download would require additional libraries like jsPDF', 'info');
+            // For actual PDF generation, you would need jsPDF library
         }
         
         // Calculate word count
@@ -2018,8 +1728,13 @@
         
         // Show notification
         function showNotification(message, type) {
+            // Remove existing notification
+            const existing = document.querySelector('.notification-toast');
+            if (existing) existing.remove();
+            
+            // Create notification
             const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg text-white z-50 ${
+            notification.className = `notification-toast fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg text-white z-50 ${
                 type === 'success' ? 'bg-green-600' : 
                 type === 'error' ? 'bg-red-600' : 
                 type === 'warning' ? 'bg-yellow-600' : 
@@ -2039,6 +1754,7 @@
             
             document.body.appendChild(notification);
             
+            // Auto remove
             setTimeout(() => {
                 notification.style.opacity = '0';
                 notification.style.transform = 'translateY(-20px)';
@@ -2049,19 +1765,16 @@
         // Close edit popup when clicking outside
         document.addEventListener('click', function(e) {
             const popup = document.getElementById('edit-popup');
-            const fontEditor = document.getElementById('font-editor');
-            
             if (popup && !popup.contains(e.target) && currentEditingElement !== e.target) {
                 cancelEdit();
             }
             
-            if (fontEditor && !fontEditor.contains(e.target)) {
-                closeFontEditor();
-            }
-            
             const modal = document.getElementById('add-product-modal');
             if (modal && !modal.contains(e.target) && !e.target.closest('[onclick*="openAddProductModal"]')) {
-                closeAddProductModal();
+                // Don't close if clicking on add product button
+                if (!e.target.closest('[onclick*="openAddProductModal"]')) {
+                    closeAddProductModal();
+                }
             }
         });
         
@@ -2073,12 +1786,32 @@
                 saveChanges();
             }
             
+            // Ctrl+E to toggle edit mode
+            if (e.ctrlKey && e.key === 'e') {
+                e.preventDefault();
+                isEditingMode = !isEditingMode;
+                document.getElementById('edit-mode').textContent = isEditingMode ? 'ON' : 'OFF';
+                document.getElementById('edit-mode').className = 
+                    isEditingMode ? 'text-green-400' : 'text-red-400';
+                showNotification(`Edit mode ${isEditingMode ? 'enabled' : 'disabled'}`, 'info');
+            }
+            
             // Escape to cancel edit
             if (e.key === 'Escape') {
                 cancelEdit();
-                closeFontEditor();
-                closeFloatingToolbar();
                 closeAddProductModal();
+            }
+            
+            // Ctrl+D to download image
+            if (e.ctrlKey && e.key === 'd') {
+                e.preventDefault();
+                downloadAsImage();
+            }
+            
+            // Ctrl+P to update preview
+            if (e.ctrlKey && e.key === 'p') {
+                e.preventDefault();
+                updatePreview();
             }
         });
         
