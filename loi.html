@@ -288,7 +288,6 @@
                                 <label class="text-sm text-gray-300">Email</label>
                                 <input type="text" id="company-email" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="purchasedaf@yahoo.com">
                             </div>
-                            <!-- NEW: Header and Footer Address Fields -->
                             <div>
                                 <label class="text-sm text-gray-300">Header Address</label>
                                 <input type="text" id="header-address" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Tower Anugrah Floor 16 Office Garden E.3.8, Mega Kuningan Area">
@@ -301,7 +300,6 @@
                                 <label class="text-sm text-gray-300">Copyright Text</label>
                                 <input type="text" id="copyright-text" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="© 2023 Opulence Group Indonesia. All Rights Reserved.">
                             </div>
-                            <!-- NEW: Footer Company Details -->
                             <div>
                                 <label class="text-sm text-gray-300">Footer Company Name</label>
                                 <input type="text" id="footer-company" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="OPULENCE GROUP INDONESIA">
@@ -340,7 +338,7 @@
                         </div>
                     </div>
                     
-                    <!-- Product Details -->
+                    <!-- Product Details - UPDATED -->
                     <div class="bg-gray-800/50 p-4 rounded-lg">
                         <h4 class="font-bold text-blue-300 mb-3">Product Details</h4>
                         <div class="space-y-3">
@@ -349,12 +347,33 @@
                                 <input type="text" id="product-name" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="Premium Grade Cardamom">
                             </div>
                             <div>
-                                <label class="text-sm text-gray-300">Quantity</label>
-                                <input type="text" id="product-quantity" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="12 Metric Tons">
+                                <label class="text-sm text-gray-300">HSN/SAC Code</label>
+                                <input type="text" id="product-hsn" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="0910.11.00">
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-sm text-gray-300">Quantity</label>
+                                    <input type="text" id="product-quantity" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="12">
+                                </div>
+                                <div>
+                                    <label class="text-sm text-gray-300">Unit</label>
+                                    <select id="product-unit" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1">
+                                        <option value="Metric Tons">Metric Tons</option>
+                                        <option value="Kg">Kg</option>
+                                        <option value="Units">Units</option>
+                                        <option value="Pieces">Pieces</option>
+                                        <option value="Boxes">Boxes</option>
+                                        <option value="Litres">Litres</option>
+                                    </select>
+                                </div>
                             </div>
                             <div>
-                                <label class="text-sm text-gray-300">Value</label>
-                                <input type="text" id="product-value" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="USD 385,000.00">
+                                <label class="text-sm text-gray-300">Price per Unit (USD)</label>
+                                <input type="text" id="product-price" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="32,083.33">
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-300">Amount (USD)</label>
+                                <input type="text" id="product-amount" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white mt-1" value="385,000.00" readonly>
                             </div>
                         </div>
                         
@@ -625,7 +644,7 @@
             </div>
         </div>
         
-        <!-- Add Product Modal -->
+        <!-- Add Product Modal - UPDATED -->
         <div id="add-product-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-xl shadow-2xl w-full max-w-md">
                 <div class="p-6">
@@ -638,13 +657,37 @@
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
-                            <input type="text" id="new-product-quantity" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., 10 Metric Tons">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">HSN/SAC Code</label>
+                            <input type="text" id="new-product-hsn" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., 0910.11.00">
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                                <input type="number" id="new-product-quantity" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., 12" step="0.01">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Unit</label>
+                                <select id="new-product-unit" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="Metric Tons">Metric Tons</option>
+                                    <option value="Kg">Kg</option>
+                                    <option value="Units">Units</option>
+                                    <option value="Pieces">Pieces</option>
+                                    <option value="Boxes">Boxes</option>
+                                    <option value="Litres">Litres</option>
+                                </select>
+                            </div>
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Value</label>
-                            <input type="text" id="new-product-value" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., USD 250,000.00">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Price per Unit (USD)</label>
+                            <input type="number" id="new-product-price" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., 32083.33" step="0.01">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Amount (USD)</label>
+                            <input type="text" id="new-product-amount" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50" placeholder="Auto-calculated" readonly>
                         </div>
                     </div>
                     
@@ -668,7 +711,7 @@
         let isEditingMode = true;
         let letterData = {};
         
-        // Default data structure - COMPLETELY UPDATED with Opulence Group Indonesia details
+        // Default data structure - UPDATED with new table structure
         const defaultData = {
             header: {
                 companyLine1: "OPULENCE GROUP",
@@ -702,11 +745,16 @@
                 products: [
                     {
                         name: "Premium Grade Cardamom",
-                        quantity: "12 Metric Tons",
-                        value: "USD 385,000.00"
+                        hsn: "0910.11.00",
+                        quantity: "12",
+                        unit: "Metric Tons",
+                        price: "32,083.33",
+                        amount: "385,000.00"
                     }
                 ],
                 tableRows: [],
+                subtotal: "385,000.00",
+                total: "385,000.00",
                 shippingTerms: {
                     origin: "JNPT, Navi Mumbai, India",
                     destination: "Tanjung Priok, Jakarta, Indonesia",
@@ -747,38 +795,24 @@
         // Initialize
         function init() {
             // Load data from localStorage or use default
-            const savedData = localStorage.getItem('damaiAgroLetter');
+            const savedData = localStorage.getItem('opulenceGroupLetter');
             if (savedData) {
                 letterData = JSON.parse(savedData);
-                if (!letterData.content.products) {
-                    letterData.content.products = [{
-                        name: "Premium Grade Cardamom",
-                        quantity: "12 Metric Tons",
-                        value: "USD 385,000.00"
-                    }];
+                // Ensure products have all required fields
+                if (letterData.content.products) {
+                    letterData.content.products.forEach(product => {
+                        if (!product.hsn) product.hsn = "";
+                        if (!product.unit) product.unit = "Metric Tons";
+                        if (!product.price) {
+                            // Try to calculate price from amount and quantity
+                            const amount = parseFloat(product.amount?.replace(/[^0-9.]/g, '')) || 0;
+                            const quantity = parseFloat(product.quantity?.replace(/[^0-9.]/g, '')) || 1;
+                            product.price = amount > 0 && quantity > 0 ? (amount/quantity).toFixed(2) : "0.00";
+                        }
+                    });
                 }
-                // Ensure footer data exists
-                if (!letterData.footer) {
-                    letterData.footer = {
-                        address: "Tower Anugrah Floor 16 Office Garden E.3.8, Mega Kuningan Area, Dr. Ide Anak Street Agung Gde",
-                        copyright: "© 2023 Opulence Group Indonesia. All Rights Reserved.",
-                        phone: "+62 831-8271-8126",
-                        email: "purchasedaf@yahoo.com",
-                        companyName: "OPULENCE GROUP INDONESIA",
-                        tagline: "Global Trade & Investment Solutions"
-                    };
-                }
-                // Ensure header address exists
-                if (!letterData.header.headerAddress) {
-                    letterData.header.headerAddress = "Tower Anugrah Floor 16 Office Garden E.3.8, Mega Kuningan Area";
-                }
-                // Ensure footer company name and tagline exist
-                if (!letterData.footer.companyName) {
-                    letterData.footer.companyName = "OPULENCE GROUP INDONESIA";
-                }
-                if (!letterData.footer.tagline) {
-                    letterData.footer.tagline = "Global Trade & Investment Solutions";
-                }
+                
+                // Update table from products
                 updateTableFromProducts();
             } else {
                 letterData = JSON.parse(JSON.stringify(defaultData));
@@ -805,6 +839,41 @@
             
             // Update status
             updateStatus();
+            
+            // Set up auto-calculate for product fields
+            setupAutoCalculate();
+        }
+        
+        // Set up auto-calculation for product fields
+        function setupAutoCalculate() {
+            const quantityInput = document.getElementById('product-quantity');
+            const priceInput = document.getElementById('product-price');
+            const amountInput = document.getElementById('product-amount');
+            
+            const calculateAmount = () => {
+                const quantity = parseFloat(quantityInput.value.replace(/,/g, '')) || 0;
+                const price = parseFloat(priceInput.value.replace(/,/g, '')) || 0;
+                const amount = quantity * price;
+                amountInput.value = amount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            };
+            
+            quantityInput.addEventListener('input', calculateAmount);
+            priceInput.addEventListener('input', calculateAmount);
+            
+            // Setup for new product modal
+            const newQuantityInput = document.getElementById('new-product-quantity');
+            const newPriceInput = document.getElementById('new-product-price');
+            const newAmountInput = document.getElementById('new-product-amount');
+            
+            const calculateNewAmount = () => {
+                const quantity = parseFloat(newQuantityInput.value) || 0;
+                const price = parseFloat(newPriceInput.value) || 0;
+                const amount = quantity * price;
+                newAmountInput.value = amount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            };
+            
+            newQuantityInput.addEventListener('input', calculateNewAmount);
+            newPriceInput.addEventListener('input', calculateNewAmount);
         }
         
         // Initialize form inputs with current data
@@ -834,10 +903,13 @@
             document.getElementById('from-address3').value = letterData.addresses.fromAddress3;
             
             // Product Details - Use first product
-            const firstProduct = letterData.content.products[0] || { name: "", quantity: "", value: "" };
+            const firstProduct = letterData.content.products[0] || { name: "", hsn: "", quantity: "", unit: "Metric Tons", price: "", amount: "" };
             document.getElementById('product-name').value = firstProduct.name;
+            document.getElementById('product-hsn').value = firstProduct.hsn;
             document.getElementById('product-quantity').value = firstProduct.quantity;
-            document.getElementById('product-value').value = firstProduct.value;
+            document.getElementById('product-unit').value = firstProduct.unit || "Metric Tons";
+            document.getElementById('product-price').value = firstProduct.price;
+            document.getElementById('product-amount').value = firstProduct.amount;
             
             // Signature Details
             document.getElementById('signatory-name').value = letterData.signature.name;
@@ -866,7 +938,10 @@
                         <div class="flex justify-between items-start">
                             <div class="flex-1">
                                 <div class="font-semibold text-white">${product.name}</div>
-                                <div class="text-sm text-gray-300">${product.quantity} - ${product.value}</div>
+                                <div class="text-sm text-gray-300">
+                                    ${product.quantity} ${product.unit} × ${product.price} = ${product.amount} USD
+                                </div>
+                                <div class="text-xs text-gray-400 mt-1">HSN: ${product.hsn}</div>
                             </div>
                             <button onclick="removeProduct(${index})" class="ml-2 text-red-400 hover:text-red-300">
                                 <i class="fas fa-times"></i>
@@ -891,17 +966,23 @@
             document.getElementById('add-product-modal').classList.add('hidden');
             // Clear inputs
             document.getElementById('new-product-name').value = '';
+            document.getElementById('new-product-hsn').value = '';
             document.getElementById('new-product-quantity').value = '';
-            document.getElementById('new-product-value').value = '';
+            document.getElementById('new-product-unit').value = 'Metric Tons';
+            document.getElementById('new-product-price').value = '';
+            document.getElementById('new-product-amount').value = '';
         }
         
         // Save new product
         function saveNewProduct() {
             const name = document.getElementById('new-product-name').value.trim();
+            const hsn = document.getElementById('new-product-hsn').value.trim();
             const quantity = document.getElementById('new-product-quantity').value.trim();
-            const value = document.getElementById('new-product-value').value.trim();
+            const unit = document.getElementById('new-product-unit').value;
+            const price = document.getElementById('new-product-price').value.trim();
+            const amount = document.getElementById('new-product-amount').value.trim();
             
-            if (!name || !quantity || !value) {
+            if (!name || !quantity || !price) {
                 showNotification('Please fill in all required fields', 'error');
                 return;
             }
@@ -911,11 +992,23 @@
                 letterData.content.products = [];
             }
             
-            letterData.content.products.push({
+            const newProduct = {
                 name: name,
+                hsn: hsn || "",
                 quantity: quantity,
-                value: value
-            });
+                unit: unit,
+                price: parseFloat(price).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}),
+                amount: amount || "0.00"
+            };
+            
+            // Calculate amount if not provided
+            if (!amount || amount === "0.00") {
+                const qty = parseFloat(quantity) || 0;
+                const prc = parseFloat(price) || 0;
+                newProduct.amount = (qty * prc).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            }
+            
+            letterData.content.products.push(newProduct);
             
             // Update products list
             updateProductsList();
@@ -948,48 +1041,64 @@
             }
         }
         
-        // Update table from products - FIXED VERSION
+        // Update table from products - UPDATED for new structure
         function updateTableFromProducts() {
             // Clear existing table rows
             letterData.content.tableRows = [];
             
-            if (letterData.content.products && letterData.content.products.length > 0) {
-                // Add each product as separate rows in the table
-                letterData.content.products.forEach((product, index) => {
-                    // Add product name row
-                    letterData.content.tableRows.push([`Product ${index + 1}`, product.name]);
-                    
-                    // Add quantity row
-                    letterData.content.tableRows.push([`Quantity ${index + 1}`, product.quantity]);
-                    
-                    // Add value row
-                    letterData.content.tableRows.push([`Value ${index + 1}`, product.value]);
-                    
-                    // Add empty separator row between products (except after last product)
-                    if (index < letterData.content.products.length - 1) {
-                        letterData.content.tableRows.push(["", ""]);
-                    }
-                });
-                
-                // Add total value row
-                let totalValue = 0;
-                letterData.content.products.forEach(product => {
-                    const valueStr = product.value.replace(/[^0-9.]/g, '');
-                    const value = parseFloat(valueStr) || 0;
-                    totalValue += value;
-                });
-                
-                // Add separator before total
-                if (letterData.content.products.length > 0) {
-                    letterData.content.tableRows.push(["", ""]);
-                }
-                
-                letterData.content.tableRows.push(["Total Contract Value", `USD ${totalValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`]);
-            }
+            let subtotal = 0;
             
-            // Add other rows after products
-            letterData.content.tableRows.push(["Delivery Schedule", "Within 35 days from Purchase Order date"]);
-            letterData.content.tableRows.push(["Documentation Requirements", "• Certificate of Origin<br>• Quality Inspection Certificate<br>• Phytosanitary Certificate"]);
+            if (letterData.content.products && letterData.content.products.length > 0) {
+                // Add header row
+                letterData.content.tableRows.push([
+                    "Item Name",
+                    "HSN/SAC",
+                    "Quantity",
+                    "Unit",
+                    "Price/Unit (USD)",
+                    "Amount (USD)"
+                ]);
+                
+                // Add each product row
+                letterData.content.products.forEach((product, index) => {
+                    const amount = parseFloat(product.amount.replace(/[^0-9.]/g, '')) || 0;
+                    subtotal += amount;
+                    
+                    letterData.content.tableRows.push([
+                        product.name,
+                        product.hsn,
+                        product.quantity,
+                        product.unit,
+                        product.price,
+                        product.amount
+                    ]);
+                });
+                
+                // Add empty row for spacing
+                letterData.content.tableRows.push(["", "", "", "", "", ""]);
+                
+                // Add subtotal row
+                letterData.content.subtotal = subtotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                letterData.content.tableRows.push([
+                    "",
+                    "",
+                    "",
+                    "",
+                    "Sub Total",
+                    letterData.content.subtotal
+                ]);
+                
+                // Add total row
+                letterData.content.total = subtotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                letterData.content.tableRows.push([
+                    "",
+                    "",
+                    "",
+                    "",
+                    "Total",
+                    letterData.content.total
+                ]);
+            }
         }
         
         // Render the letter
@@ -1021,9 +1130,12 @@
             
             // Make elements editable
             makeElementsEditable();
+            
+            // Calculate word count
+            calculateWordCount();
         }
         
-        // Render header section - UPDATED WITH EDITABLE ADDRESS
+        // Render header section
         function renderHeader() {
             const section = document.createElement('div');
             section.className = 'mb-12';
@@ -1148,42 +1260,85 @@
             return section;
         }
         
-        // Render table
+        // Render table - COMPLETELY UPDATED
         function renderTable() {
             const section = document.createElement('div');
             section.className = 'overflow-x-auto my-8';
             
             let tableRowsHTML = '';
-            letterData.content.tableRows.forEach((row, index) => {
-                const isEmptyRow = row[0] === "" && row[1] === "";
+            
+            // Add header row
+            tableRowsHTML += `
+                <tr class="bg-gradient-to-r from-blue-50 to-blue-100">
+                    <th class="border border-gray-300 px-4 py-3 text-left font-bold text-gray-800 text-sm">Item Name</th>
+                    <th class="border border-gray-300 px-4 py-3 text-left font-bold text-gray-800 text-sm">HSN/SAC</th>
+                    <th class="border border-gray-300 px-4 py-3 text-left font-bold text-gray-800 text-sm">Quantity</th>
+                    <th class="border border-gray-300 px-4 py-3 text-left font-bold text-gray-800 text-sm">Unit</th>
+                    <th class="border border-gray-300 px-4 py-3 text-left font-bold text-gray-800 text-sm">Price/Unit (USD)</th>
+                    <th class="border border-gray-300 px-4 py-3 text-left font-bold text-gray-800 text-sm">Amount (USD)</th>
+                </tr>
+            `;
+            
+            // Add product rows
+            letterData.content.products.forEach((product, index) => {
                 tableRowsHTML += `
-                    <tr class="${index % 2 === 0 && !isEmptyRow ? 'hover:bg-gray-50' : !isEmptyRow ? 'hover:bg-gray-50 bg-gray-50' : ''} ${isEmptyRow ? 'h-4' : ''}">
-                        <td class="border border-gray-300 px-6 py-4 ${isEmptyRow ? 'border-none' : ''} ${row[0].includes('Product') || row[0].includes('Total') ? 'font-semibold' : ''}" 
-                            data-edit="content.tableRows.${index}.0" 
+                    <tr class="hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
+                        <td class="border border-gray-300 px-4 py-3" 
+                            data-edit="content.products.${index}.name" 
                             data-index="${index}" 
-                            data-col="0">
-                            ${row[0]}
-                        </td>
-                        <td class="border border-gray-300 px-6 py-4 ${isEmptyRow ? 'border-none' : ''}" 
-                            data-edit="content.tableRows.${index}.1" 
+                            data-field="name">${product.name}</td>
+                        <td class="border border-gray-300 px-4 py-3" 
+                            data-edit="content.products.${index}.hsn" 
                             data-index="${index}" 
-                            data-col="1">
-                            ${row[1]}
-                        </td>
+                            data-field="hsn">${product.hsn}</td>
+                        <td class="border border-gray-300 px-4 py-3 text-right" 
+                            data-edit="content.products.${index}.quantity" 
+                            data-index="${index}" 
+                            data-field="quantity">${product.quantity}</td>
+                        <td class="border border-gray-300 px-4 py-3" 
+                            data-edit="content.products.${index}.unit" 
+                            data-index="${index}" 
+                            data-field="unit">${product.unit}</td>
+                        <td class="border border-gray-300 px-4 py-3 text-right" 
+                            data-edit="content.products.${index}.price" 
+                            data-index="${index}" 
+                            data-field="price">${product.price}</td>
+                        <td class="border border-gray-300 px-4 py-3 text-right font-medium" 
+                            data-edit="content.products.${index}.amount" 
+                            data-index="${index}" 
+                            data-field="amount">${product.amount}</td>
                     </tr>
                 `;
             });
             
+            // Add empty row for spacing
+            tableRowsHTML += `
+                <tr>
+                    <td colspan="6" class="py-2"></td>
+                </tr>
+            `;
+            
+            // Add subtotal and total rows
+            tableRowsHTML += `
+                <tr class="border-t-2 border-gray-300">
+                    <td colspan="4" class="px-4 py-3"></td>
+                    <td class="border border-gray-300 px-4 py-3 bg-gray-100 font-bold text-right">Sub Total</td>
+                    <td class="border border-gray-300 px-4 py-3 bg-gray-100 font-bold text-right" data-edit="content.subtotal">${letterData.content.subtotal}</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="px-4 py-3"></td>
+                    <td class="border border-gray-300 px-4 py-3 bg-blue-100 font-bold text-right text-blue-800">Total</td>
+                    <td class="border border-gray-300 px-4 py-3 bg-blue-100 font-bold text-right text-blue-800" data-edit="content.total">${letterData.content.total}</td>
+                </tr>
+            `;
+            
             section.innerHTML = `
-                <table class="w-full border-collapse border border-gray-300 shadow-sm">
-                    <thead class="bg-gradient-to-r from-blue-50 to-blue-100">
-                        <tr>
-                            <th class="border border-gray-300 px-6 py-4 text-left font-bold text-gray-800">Description</th>
-                            <th class="border border-gray-300 px-6 py-4 text-left font-bold text-gray-800">Specifications</th>
-                        </tr>
+                <table class="w-full border-collapse border border-gray-300 shadow-sm text-sm">
+                    <thead>
+                        ${tableRowsHTML}
                     </thead>
                     <tbody>
-                        ${tableRowsHTML}
+                        <!-- Rows are already included in tableRowsHTML -->
                     </tbody>
                 </table>
             `;
@@ -1220,7 +1375,7 @@
             return section;
         }
         
-        // Render footer - UPDATED VERSION (Editable company name and tagline, phone in single line, email removed)
+        // Render footer
         function renderFooter() {
             const section = document.createElement('footer');
             section.className = 'bg-gray-900 text-white py-8 mt-12 rounded-xl';
@@ -1249,7 +1404,6 @@
                                     <i class="fas fa-phone mr-2"></i>
                                     <span data-edit="footer.phone">${letterData.footer.phone}</span>
                                 </span>
-                                <!-- Email removed as requested -->
                             </div>
                             <p class="text-gray-400 text-sm" data-edit="footer.copyright">
                                 ${letterData.footer.copyright}
@@ -1277,17 +1431,6 @@
                     startEditing(this);
                 });
             });
-            
-            // Add table cell editing
-            const tableCells = document.querySelectorAll('td[data-edit]');
-            tableCells.forEach(cell => {
-                cell.addEventListener('click', function(e) {
-                    if (!isEditingMode) return;
-                    
-                    e.stopPropagation();
-                    startEditing(this);
-                });
-            });
         }
         
         // Start editing an element
@@ -1307,7 +1450,14 @@
             // Get current value based on edit path
             let currentValue = getValueByPath(letterData, editPath);
             
-            // For table cells, get the specific value
+            // For product fields in table
+            if (editPath.startsWith('content.products')) {
+                const index = element.getAttribute('data-index');
+                const field = element.getAttribute('data-field');
+                currentValue = letterData.content.products[index][field];
+            }
+            
+            // For table rows in the old structure
             if (editPath.startsWith('content.tableRows')) {
                 const index = element.getAttribute('data-index');
                 const col = element.getAttribute('data-col');
@@ -1336,7 +1486,22 @@
             const newValue = document.getElementById('edit-textarea').value;
             
             // Update data based on edit path
-            if (editPath.startsWith('content.tableRows')) {
+            if (editPath.startsWith('content.products')) {
+                const index = currentEditingElement.getAttribute('data-index');
+                const field = currentEditingElement.getAttribute('data-field');
+                letterData.content.products[index][field] = newValue;
+                
+                // Recalculate amount if quantity or price changed
+                if (field === 'quantity' || field === 'price') {
+                    const product = letterData.content.products[index];
+                    const quantity = parseFloat(product.quantity.replace(/[^0-9.]/g, '')) || 0;
+                    const price = parseFloat(product.price.replace(/[^0-9.]/g, '')) || 0;
+                    product.amount = (quantity * price).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                }
+                
+                // Update table from products after product edit
+                updateTableFromProducts();
+            } else if (editPath.startsWith('content.tableRows')) {
                 const index = currentEditingElement.getAttribute('data-index');
                 const col = currentEditingElement.getAttribute('data-col');
                 letterData.content.tableRows[index][col] = newValue;
@@ -1346,6 +1511,11 @@
             
             // Update the element
             currentEditingElement.innerHTML = newValue;
+            
+            // If editing a product field, re-render the entire table
+            if (editPath.startsWith('content.products')) {
+                renderLetter();
+            }
             
             // Close popup
             cancelEdit();
@@ -1358,30 +1528,7 @@
             calculateWordCount();
         }
         
-        // Cancel edit
-        function cancelEdit() {
-            if (currentEditingElement) {
-                currentEditingElement.classList.remove('editing');
-                currentEditingElement = null;
-            }
-            
-            document.getElementById('edit-popup').classList.add('hidden');
-        }
-        
-        // Get value by path
-        function getValueByPath(obj, path) {
-            return path.split('.').reduce((o, p) => o[p], obj);
-        }
-        
-        // Set value by path
-        function setValueByPath(obj, path, value) {
-            const keys = path.split('.');
-            const lastKey = keys.pop();
-            const target = keys.reduce((o, p) => o[p], obj);
-            target[lastKey] = value;
-        }
-        
-        // Apply quick edits from form - UPDATED WITH NEW FIELDS
+        // Apply quick edits from form - UPDATED with new fields
         function applyQuickEdits() {
             // Update data from form inputs
             letterData.content.title = document.getElementById('quick-title').value;
@@ -1404,15 +1551,23 @@
             // Update first product if exists
             if (letterData.content.products && letterData.content.products.length > 0) {
                 letterData.content.products[0].name = document.getElementById('product-name').value;
+                letterData.content.products[0].hsn = document.getElementById('product-hsn').value;
                 letterData.content.products[0].quantity = document.getElementById('product-quantity').value;
-                letterData.content.products[0].value = document.getElementById('product-value').value;
+                letterData.content.products[0].unit = document.getElementById('product-unit').value;
+                letterData.content.products[0].price = document.getElementById('product-price').value;
+                
+                // Recalculate amount
+                const quantity = parseFloat(letterData.content.products[0].quantity.replace(/[^0-9.]/g, '')) || 0;
+                const price = parseFloat(letterData.content.products[0].price.replace(/[^0-9.]/g, '')) || 0;
+                letterData.content.products[0].amount = (quantity * price).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                
                 updateTableFromProducts();
                 updateProductsList();
             }
             
             letterData.signature.name = document.getElementById('signatory-name').value;
             letterData.signature.designation = document.getElementById('signatory-designation').value;
-            letterData.signature.company = letterData.footer.companyName; // Update signature company
+            letterData.signature.company = letterData.footer.companyName;
             
             // Update footer data
             letterData.footer.address = document.getElementById('footer-address').value;
@@ -1431,218 +1586,17 @@
             updateStatus();
         }
         
-        // Apply styles
-        function applyStyles() {
-            letterData.styles.primaryColor = document.getElementById('color-primary').value;
-            letterData.styles.secondaryColor = document.getElementById('color-secondary').value;
-            letterData.styles.headingFont = document.getElementById('font-heading').value;
-            letterData.styles.bodyFont = document.getElementById('font-body').value;
-            letterData.styles.watermarkText = document.getElementById('watermark-text').value;
-            letterData.styles.watermarkOpacity = document.getElementById('watermark-opacity').value / 100;
-            
-            // Update opacity display
-            document.getElementById('opacity-value').textContent = 
-                Math.round(letterData.styles.watermarkOpacity * 100) + "%";
-            
-            // Apply styles to letter
-            applyStylesToLetter();
-            
-            showNotification('Styles applied successfully!', 'success');
-            changesMade++;
-            updateStatus();
+        // Get value by path
+        function getValueByPath(obj, path) {
+            return path.split('.').reduce((o, p) => o[p], obj);
         }
         
-        // Apply styles to letter
-        function applyStylesToLetter() {
-            // Update CSS variables or inline styles
-            const container = document.getElementById('letter-container');
-            
-            // Update heading font
-            const headings = container.querySelectorAll('[class*="text-4xl"], [class*="text-5xl"], [class*="text-3xl"]');
-            headings.forEach(h => {
-                h.style.fontFamily = letterData.styles.headingFont;
-            });
-            
-            // Update primary color elements
-            const primaryColorElements = container.querySelectorAll('.text-blue-900, .from-blue-900');
-            primaryColorElements.forEach(el => {
-                if (el.classList.contains('text-blue-900')) {
-                    el.style.color = letterData.styles.primaryColor;
-                }
-                if (el.classList.contains('from-blue-900')) {
-                    el.style.background = `linear-gradient(to right, ${letterData.styles.primaryColor}, ${letterData.styles.secondaryColor})`;
-                }
-            });
-        }
-        
-        // Apply structure changes
-        function applyStructure() {
-            showNotification('Structure changes applied!', 'info');
-            // Note: Full structure reordering would require more complex implementation
-        }
-        
-        // Add table row
-        function addTableRow() {
-            letterData.content.tableRows.push(["New Description", "New Value"]);
-            renderLetter();
-            showNotification('Table row added!', 'success');
-            changesMade++;
-            updateStatus();
-        }
-        
-        // Remove table row
-        function removeTableRow() {
-            if (letterData.content.tableRows.length > 1) {
-                letterData.content.tableRows.pop();
-                renderLetter();
-                showNotification('Last table row removed!', 'success');
-                changesMade++;
-                updateStatus();
-            } else {
-                showNotification('Cannot remove the last row!', 'error');
-            }
-        }
-        
-        // Export data
-        function exportData() {
-            const dataStr = JSON.stringify(letterData, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-            
-            const exportFileDefaultName = `opulence-group-letter-${new Date().toISOString().slice(0,10)}.json`;
-            
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
-            
-            showNotification('Data exported successfully!', 'success');
-        }
-        
-        // Import data
-        function importData() {
-            document.getElementById('import-file').click();
-        }
-        
-        // Handle file import
-        document.getElementById('import-file').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                try {
-                    const importedData = JSON.parse(event.target.result);
-                    letterData = importedData;
-                    if (!letterData.content.products) {
-                        letterData.content.products = [{
-                            name: "Premium Grade Cardamom",
-                            quantity: "12 Metric Tons",
-                            value: "USD 385,000.00"
-                        }];
-                    }
-                    // Ensure footer data exists
-                    if (!letterData.footer) {
-                        letterData.footer = {
-                            address: "Tower Anugrah Floor 16 Office Garden E.3.8, Mega Kuningan Area, Dr. Ide Anak Street Agung Gde",
-                            copyright: "© 2023 Opulence Group Indonesia. All Rights Reserved.",
-                            phone: "+62 831-8271-8126",
-                            email: "purchasedaf@yahoo.com",
-                            companyName: "OPULENCE GROUP INDONESIA",
-                            tagline: "Global Trade & Investment Solutions"
-                        };
-                    }
-                    // Ensure header address exists
-                    if (!letterData.header.headerAddress) {
-                        letterData.header.headerAddress = "Tower Anugrah Floor 16 Office Garden E.3.8, Mega Kuningan Area";
-                    }
-                    // Ensure footer company name and tagline exist
-                    if (!letterData.footer.companyName) {
-                        letterData.footer.companyName = "OPULENCE GROUP INDONESIA";
-                    }
-                    if (!letterData.footer.tagline) {
-                        letterData.footer.tagline = "Global Trade & Investment Solutions";
-                    }
-                    updateTableFromProducts();
-                    initializeFormInputs();
-                    updateProductsList();
-                    renderLetter();
-                    showNotification('Data imported successfully!', 'success');
-                    changesMade = 0;
-                    updateStatus();
-                } catch (error) {
-                    showNotification('Error importing file!', 'error');
-                    console.error(error);
-                }
-            };
-            reader.readAsText(file);
-            
-            // Reset file input
-            e.target.value = '';
-        });
-        
-        // Reset to default
-        function resetToDefault() {
-            if (confirm('Are you sure you want to reset to default values? All changes will be lost.')) {
-                letterData = JSON.parse(JSON.stringify(defaultData));
-                updateTableFromProducts();
-                initializeFormInputs();
-                updateProductsList();
-                renderLetter();
-                showNotification('Reset to default values!', 'info');
-                changesMade = 0;
-                updateStatus();
-            }
-        }
-        
-        // Clear all
-        function clearAll() {
-            if (confirm('Are you sure you want to clear everything? This cannot be undone.')) {
-                letterData = {
-                    header: { 
-                        companyLine1: "", 
-                        companyLine2: "", 
-                        tagline: "", 
-                        phone: "", 
-                        email: "", 
-                        documentType: "", 
-                        date: "", 
-                        reference: "",
-                        logoUrl: "https://araldomqfedor-blip.github.io/loi/loko.png",
-                        headerAddress: ""
-                    },
-                    addresses: { fromCompany: "", fromAddress1: "", fromAddress2: "", fromAddress3: "", toCompany: "", toAddress1: "", toAddress2: "", toAddress3: "" },
-                    content: { 
-                        title: "", 
-                        salutation: "", 
-                        paragraph1: "", 
-                        addressQuote: "", 
-                        paragraph2: "", 
-                        paragraph3: "", 
-                        products: [],
-                        tableRows: [],
-                        shippingTerms: { origin: "", destination: "", incoterms: "" }, 
-                        paymentTerms: { advance: "", balance: "", lcType: "" }, 
-                        closing1: "", 
-                        closing2: "" 
-                    },
-                    signature: { name: "", designation: "", company: "", date: "" },
-                    footer: {
-                        address: "",
-                        copyright: "",
-                        phone: "",
-                        email: "",
-                        companyName: "",
-                        tagline: ""
-                    },
-                    styles: letterData.styles
-                };
-                initializeFormInputs();
-                updateProductsList();
-                renderLetter();
-                showNotification('All content cleared!', 'warning');
-                changesMade = 0;
-                updateStatus();
-            }
+        // Set value by path
+        function setValueByPath(obj, path, value) {
+            const keys = path.split('.');
+            const lastKey = keys.pop();
+            const target = keys.reduce((o, p) => o[p], obj);
+            target[lastKey] = value;
         }
         
         // Save changes
@@ -1654,42 +1608,6 @@
             showNotification('Changes saved successfully!', 'success');
             changesMade = 0;
             updateStatus();
-        }
-        
-        // Update preview
-        function updatePreview() {
-            renderLetter();
-            showNotification('Preview updated!', 'info');
-        }
-        
-        // Download as image
-        function downloadAsImage() {
-            const element = document.getElementById('letter-container');
-            
-            showNotification('Generating image...', 'info');
-            
-            html2canvas(element, {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: "#ffffff",
-                logging: false
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `opulence-group-letter-${new Date().toISOString().slice(0,10)}.jpg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.9);
-                link.click();
-                
-                showNotification('Image downloaded successfully!', 'success');
-            }).catch(error => {
-                console.error('Error generating image:', error);
-                showNotification('Error generating image!', 'error');
-            });
-        }
-        
-        // Download as PDF (simulated)
-        function downloadAsPDF() {
-            showNotification('PDF download would require additional libraries like jsPDF', 'info');
-            // For actual PDF generation, you would need jsPDF library
         }
         
         // Calculate word count
@@ -1771,47 +1689,9 @@
             
             const modal = document.getElementById('add-product-modal');
             if (modal && !modal.contains(e.target) && !e.target.closest('[onclick*="openAddProductModal"]')) {
-                // Don't close if clicking on add product button
                 if (!e.target.closest('[onclick*="openAddProductModal"]')) {
                     closeAddProductModal();
                 }
-            }
-        });
-        
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-            // Ctrl+S to save
-            if (e.ctrlKey && e.key === 's') {
-                e.preventDefault();
-                saveChanges();
-            }
-            
-            // Ctrl+E to toggle edit mode
-            if (e.ctrlKey && e.key === 'e') {
-                e.preventDefault();
-                isEditingMode = !isEditingMode;
-                document.getElementById('edit-mode').textContent = isEditingMode ? 'ON' : 'OFF';
-                document.getElementById('edit-mode').className = 
-                    isEditingMode ? 'text-green-400' : 'text-red-400';
-                showNotification(`Edit mode ${isEditingMode ? 'enabled' : 'disabled'}`, 'info');
-            }
-            
-            // Escape to cancel edit
-            if (e.key === 'Escape') {
-                cancelEdit();
-                closeAddProductModal();
-            }
-            
-            // Ctrl+D to download image
-            if (e.ctrlKey && e.key === 'd') {
-                e.preventDefault();
-                downloadAsImage();
-            }
-            
-            // Ctrl+P to update preview
-            if (e.ctrlKey && e.key === 'p') {
-                e.preventDefault();
-                updatePreview();
             }
         });
         
