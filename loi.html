@@ -1420,20 +1420,26 @@
             const editableElements = document.querySelectorAll('[data-edit]');
             
             editableElements.forEach(element => {
+                // Remove any existing event listeners first
+                element.removeEventListener('click', handleEditableClick);
+                
                 // Add editable class
                 element.classList.add('editable');
                 
                 // Add click event
-                element.addEventListener('click', function(e) {
-                    if (!isEditingMode) return;
-                    
-                    e.stopPropagation();
-                    startEditing(this);
-                });
+                element.addEventListener('click', handleEditableClick);
             });
         }
         
-        // Start editing an element
+        // Handle editable click
+        function handleEditableClick(e) {
+            if (!isEditingMode) return;
+            
+            e.stopPropagation();
+            startEditing(this);
+        }
+        
+        // Start editing an element - FIXED VERSION
         function startEditing(element) {
             if (currentEditingElement) {
                 currentEditingElement.classList.remove('editing');
@@ -1447,38 +1453,56 @@
             const textarea = document.getElementById('edit-textarea');
             const label = document.getElementById('edit-label');
             
-            // Get current value based on edit path
-            let currentValue = getValueByPath(letterData, editPath);
+            let currentValue = '';
             
-            // For product fields in table
+            // Get current value based on edit path
             if (editPath.startsWith('content.products')) {
                 const index = element.getAttribute('data-index');
                 const field = element.getAttribute('data-field');
-                currentValue = letterData.content.products[index][field];
+                const product = letterData.content.products[index];
+                currentValue = product ? product[field] : '';
+                label.textContent = `Editing: Product ${parseInt(index) + 1} - ${field}`;
+            } 
+            else if (editPath === 'content.subtotal') {
+                currentValue = letterData.content.subtotal;
+                label.textContent = `Editing: Sub Total`;
+            }
+            else if (editPath === 'content.total') {
+                currentValue = letterData.content.total;
+                label.textContent = `Editing: Total`;
+            }
+            else {
+                // For regular fields (header, addresses, etc.)
+                const keys = editPath.split('.');
+                let target = letterData;
+                for (const key of keys) {
+                    if (target[key] !== undefined) {
+                        target = target[key];
+                    } else {
+                        target = '';
+                        break;
+                    }
+                }
+                currentValue = target;
+                label.textContent = `Editing: ${editPath}`;
             }
             
-            // For table rows in the old structure
-            if (editPath.startsWith('content.tableRows')) {
-                const index = element.getAttribute('data-index');
-                const col = element.getAttribute('data-col');
-                currentValue = letterData.content.tableRows[index][col];
-            }
-            
-            // Set label and value
-            label.textContent = `Editing: ${editPath}`;
             textarea.value = currentValue;
             
             // Position popup near the element
             const rect = element.getBoundingClientRect();
-            popup.style.top = `${rect.top + window.scrollY}px`;
-            popup.style.left = `${rect.left + window.scrollX}px`;
+            popup.style.top = `${rect.top + window.scrollY + rect.height + 10}px`;
+            popup.style.left = `${Math.min(rect.left + window.scrollX, window.innerWidth - 350)}px`;
             popup.classList.remove('hidden');
             
             // Focus textarea
-            textarea.focus();
+            setTimeout(() => {
+                textarea.focus();
+                textarea.select();
+            }, 100);
         }
         
-        // Save edit
+        // Save edit - FIXED VERSION
         function saveEdit() {
             if (!currentEditingElement) return;
             
@@ -1489,43 +1513,73 @@
             if (editPath.startsWith('content.products')) {
                 const index = currentEditingElement.getAttribute('data-index');
                 const field = currentEditingElement.getAttribute('data-field');
-                letterData.content.products[index][field] = newValue;
                 
-                // Recalculate amount if quantity or price changed
-                if (field === 'quantity' || field === 'price') {
-                    const product = letterData.content.products[index];
-                    const quantity = parseFloat(product.quantity.replace(/[^0-9.]/g, '')) || 0;
-                    const price = parseFloat(product.price.replace(/[^0-9.]/g, '')) || 0;
-                    product.amount = (quantity * price).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                if (letterData.content.products[index]) {
+                    letterData.content.products[index][field] = newValue;
+                    
+                    // Recalculate amount if quantity or price changed
+                    if (field === 'quantity' || field === 'price') {
+                        const product = letterData.content.products[index];
+                        const quantity = parseFloat(product.quantity.replace(/[^0-9.]/g, '')) || 0;
+                        const price = parseFloat(product.price.replace(/[^0-9.]/g, '')) || 0;
+                        product.amount = (quantity * price).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    }
+                    
+                    // Update the element
+                    currentEditingElement.innerHTML = newValue;
+                    
+                    // Update table from products after product edit
+                    updateTableFromProducts();
                 }
-                
-                // Update table from products after product edit
-                updateTableFromProducts();
-            } else if (editPath.startsWith('content.tableRows')) {
-                const index = currentEditingElement.getAttribute('data-index');
-                const col = currentEditingElement.getAttribute('data-col');
-                letterData.content.tableRows[index][col] = newValue;
-            } else {
-                setValueByPath(letterData, editPath, newValue);
+            } 
+            else if (editPath === 'content.subtotal') {
+                letterData.content.subtotal = newValue;
+                currentEditingElement.innerHTML = newValue;
             }
-            
-            // Update the element
-            currentEditingElement.innerHTML = newValue;
-            
-            // If editing a product field, re-render the entire table
-            if (editPath.startsWith('content.products')) {
-                renderLetter();
+            else if (editPath === 'content.total') {
+                letterData.content.total = newValue;
+                currentEditingElement.innerHTML = newValue;
+            }
+            else {
+                // For regular fields
+                const keys = editPath.split('.');
+                let target = letterData;
+                for (let i = 0; i < keys.length - 1; i++) {
+                    target = target[keys[i]];
+                }
+                target[keys[keys.length - 1]] = newValue;
+                
+                // Update the element
+                currentEditingElement.innerHTML = newValue;
             }
             
             // Close popup
             cancelEdit();
             
+            // If editing a product field, re-render the entire table
+            if (editPath.startsWith('content.products')) {
+                // Update products list in sidebar
+                updateProductsList();
+                // Re-render letter
+                renderLetter();
+            }
+            
             // Increment changes
             changesMade++;
             updateStatus();
             
-            // Update word count
-            calculateWordCount();
+            // Show success notification
+            showNotification('Edit saved successfully!', 'success');
+        }
+        
+        // Cancel edit
+        function cancelEdit() {
+            if (currentEditingElement) {
+                currentEditingElement.classList.remove('editing');
+                currentEditingElement = null;
+            }
+            
+            document.getElementById('edit-popup').classList.add('hidden');
         }
         
         // Apply quick edits from form - UPDATED with new fields
@@ -1586,19 +1640,6 @@
             updateStatus();
         }
         
-        // Get value by path
-        function getValueByPath(obj, path) {
-            return path.split('.').reduce((o, p) => o[p], obj);
-        }
-        
-        // Set value by path
-        function setValueByPath(obj, path, value) {
-            const keys = path.split('.');
-            const lastKey = keys.pop();
-            const target = keys.reduce((o, p) => o[p], obj);
-            target[lastKey] = value;
-        }
-        
         // Save changes
         function saveChanges() {
             localStorage.setItem('opulenceGroupLetter', JSON.stringify(letterData));
@@ -1608,6 +1649,12 @@
             showNotification('Changes saved successfully!', 'success');
             changesMade = 0;
             updateStatus();
+        }
+        
+        // Update preview
+        function updatePreview() {
+            renderLetter();
+            showNotification('Preview updated!', 'info');
         }
         
         // Calculate word count
@@ -1692,6 +1739,21 @@
                 if (!e.target.closest('[onclick*="openAddProductModal"]')) {
                     closeAddProductModal();
                 }
+            }
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+S to save
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveChanges();
+            }
+            
+            // Escape to cancel edit
+            if (e.key === 'Escape') {
+                cancelEdit();
+                closeAddProductModal();
             }
         });
         
