@@ -292,6 +292,21 @@
             border-radius: 4px;
             border: 2px solid #e5e7eb;
         }
+        
+        /* Table specific styles */
+        .table-editable {
+            position: relative;
+        }
+        
+        .table-editable:hover {
+            background: rgba(59, 130, 246, 0.1) !important;
+            outline: 2px dashed #3b82f6 !important;
+        }
+        
+        .table-editing {
+            background: rgba(59, 130, 246, 0.2) !important;
+            outline: 2px solid #3b82f6 !important;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -1024,7 +1039,7 @@
                     const range = selection.getRangeAt(0);
                     const parentElement = range.commonAncestorContainer.parentElement;
                     
-                    if (parentElement.classList.contains('editable')) {
+                    if (parentElement.classList.contains('editable') || parentElement.classList.contains('table-editable')) {
                         selectedTextElement = parentElement;
                         showFloatingToolbar(range);
                     }
@@ -1490,7 +1505,7 @@
             return section;
         }
         
-        // Render table
+        // Render table - FIXED VERSION
         function renderTable() {
             const section = document.createElement('div');
             section.className = 'overflow-x-auto my-8';
@@ -1509,31 +1524,31 @@
                 </tr>
             `;
             
-            // Add product rows
+            // Add product rows - FIXED: Added table-editable class and proper event listeners
             letterData.content.products.forEach((product, index) => {
                 tableRowsHTML += `
                     <tr class="hover:bg-gray-50 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}">
-                        <td class="border border-gray-300 px-4 py-3" 
+                        <td class="border border-gray-300 px-4 py-3 table-editable" 
                             data-edit="content.products.${index}.name" 
                             data-index="${index}" 
                             data-field="name">${product.name}</td>
-                        <td class="border border-gray-300 px-4 py-3" 
+                        <td class="border border-gray-300 px-4 py-3 table-editable" 
                             data-edit="content.products.${index}.hsn" 
                             data-index="${index}" 
                             data-field="hsn">${product.hsn}</td>
-                        <td class="border border-gray-300 px-4 py-3 text-right" 
+                        <td class="border border-gray-300 px-4 py-3 text-right table-editable" 
                             data-edit="content.products.${index}.quantity" 
                             data-index="${index}" 
                             data-field="quantity">${product.quantity}</td>
-                        <td class="border border-gray-300 px-4 py-3" 
+                        <td class="border border-gray-300 px-4 py-3 table-editable" 
                             data-edit="content.products.${index}.unit" 
                             data-index="${index}" 
                             data-field="unit">${product.unit}</td>
-                        <td class="border border-gray-300 px-4 py-3 text-right" 
+                        <td class="border border-gray-300 px-4 py-3 text-right table-editable" 
                             data-edit="content.products.${index}.price" 
                             data-index="${index}" 
                             data-field="price">${product.price}</td>
-                        <td class="border border-gray-300 px-4 py-3 text-right font-medium" 
+                        <td class="border border-gray-300 px-4 py-3 text-right font-medium table-editable" 
                             data-edit="content.products.${index}.amount" 
                             data-index="${index}" 
                             data-field="amount">${product.amount}</td>
@@ -1548,17 +1563,19 @@
                 </tr>
             `;
             
-            // Add subtotal and total rows
+            // Add subtotal and total rows - FIXED: Added table-editable class
             tableRowsHTML += `
                 <tr class="border-t-2 border-gray-300">
                     <td colspan="4" class="px-4 py-3"></td>
                     <td class="border border-gray-300 px-4 py-3 bg-gray-100 font-bold text-right">Sub Total</td>
-                    <td class="border border-gray-300 px-4 py-3 bg-gray-100 font-bold text-right" data-edit="content.subtotal">${letterData.content.subtotal}</td>
+                    <td class="border border-gray-300 px-4 py-3 bg-gray-100 font-bold text-right table-editable" 
+                        data-edit="content.subtotal">${letterData.content.subtotal}</td>
                 </tr>
                 <tr>
                     <td colspan="4" class="px-4 py-3"></td>
                     <td class="border border-gray-300 px-4 py-3 bg-blue-100 font-bold text-right text-blue-800">Total</td>
-                    <td class="border border-gray-300 px-4 py-3 bg-blue-100 font-bold text-right text-blue-800" data-edit="content.total">${letterData.content.total}</td>
+                    <td class="border border-gray-300 px-4 py-3 bg-blue-100 font-bold text-right text-blue-800 table-editable" 
+                        data-edit="content.total">${letterData.content.total}</td>
                 </tr>
             `;
             
@@ -1661,16 +1678,41 @@
             });
         }
         
-        // Make elements editable
+        // Make elements editable - FIXED VERSION
         function makeElementsEditable() {
+            // Regular editable elements
             const editableElements = document.querySelectorAll('[data-edit]');
             
             editableElements.forEach(element => {
                 // Add editable class
                 element.classList.add('editable');
                 
+                // Remove existing event listeners
+                const newElement = element.cloneNode(true);
+                element.parentNode.replaceChild(newElement, element);
+                
                 // Add click event for direct editing
-                element.addEventListener('click', function(e) {
+                newElement.addEventListener('click', function(e) {
+                    if (!isEditingMode) return;
+                    
+                    e.stopPropagation();
+                    startEditing(this);
+                });
+            });
+            
+            // Table editable elements
+            const tableEditableElements = document.querySelectorAll('.table-editable');
+            
+            tableEditableElements.forEach(element => {
+                // Add editable class
+                element.classList.add('editable');
+                
+                // Remove existing event listeners
+                const newElement = element.cloneNode(true);
+                element.parentNode.replaceChild(newElement, element);
+                
+                // Add click event for direct editing
+                newElement.addEventListener('click', function(e) {
                     if (!isEditingMode) return;
                     
                     e.stopPropagation();
@@ -1679,7 +1721,7 @@
             });
         }
         
-        // Start editing an element
+        // Start editing an element - FIXED for table cells
         function startEditing(element) {
             if (currentEditingElement) {
                 currentEditingElement.classList.remove('editing');
@@ -1697,9 +1739,26 @@
             // Get current value
             let currentValue = getValueByPath(letterData, editPath);
             
-            // Set title and label
-            title.textContent = 'Edit Content';
-            label.textContent = `Editing: ${editPath}`;
+            // Special handling for table cells
+            if (editPath.startsWith('content.products')) {
+                const index = element.getAttribute('data-index');
+                const field = element.getAttribute('data-field');
+                const product = letterData.content.products[index];
+                currentValue = product ? product[field] : '';
+                
+                title.textContent = 'Edit Product';
+                label.textContent = `Editing: ${field.charAt(0).toUpperCase() + field.slice(1)}`;
+            } else if (editPath === 'content.subtotal') {
+                title.textContent = 'Edit Sub Total';
+                label.textContent = 'Editing: Sub Total Amount';
+            } else if (editPath === 'content.total') {
+                title.textContent = 'Edit Total';
+                label.textContent = 'Editing: Total Amount';
+            } else {
+                title.textContent = 'Edit Content';
+                label.textContent = `Editing: ${editPath}`;
+            }
+            
             textarea.value = currentValue;
             
             // Position popup
@@ -1715,21 +1774,51 @@
             }, 100);
         }
         
-        // Save edit
+        // Save edit - FIXED for table cells
         function saveEdit() {
             if (!currentEditingElement) return;
             
             const editPath = currentEditingElement.getAttribute('data-edit');
             const newValue = document.getElementById('edit-textarea').value;
             
-            // Update data
-            setValueByPath(letterData, editPath, newValue);
+            // Special handling for table cells
+            if (editPath.startsWith('content.products')) {
+                const index = currentEditingElement.getAttribute('data-index');
+                const field = currentEditingElement.getAttribute('data-field');
+                
+                if (letterData.content.products[index]) {
+                    letterData.content.products[index][field] = newValue;
+                    
+                    // Recalculate amount if quantity or price changed
+                    if (field === 'quantity' || field === 'price') {
+                        const product = letterData.content.products[index];
+                        const quantity = parseFloat(product.quantity.replace(/[^0-9.]/g, '')) || 0;
+                        const price = parseFloat(product.price.replace(/[^0-9.]/g, '')) || 0;
+                        product.amount = (quantity * price).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                        
+                        // Update subtotal and total
+                        updateTableFromProducts();
+                    }
+                    
+                    // Update products list in sidebar
+                    updateProductsList();
+                }
+            } else {
+                // Update data for regular fields
+                setValueByPath(letterData, editPath, newValue);
+            }
             
             // Update the element
             currentEditingElement.innerHTML = newValue;
             
             // Close popup
             cancelEdit();
+            
+            // If editing a product field, re-render the entire table
+            if (editPath.startsWith('content.products')) {
+                // Re-render letter to show updated table
+                renderLetter();
+            }
             
             // Increment changes
             changesMade++;
